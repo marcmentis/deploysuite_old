@@ -48,6 +48,7 @@ command :clone do |c|
     r.run_clone(options[:repo], global_options[:host_path])
 
     STDOUT.puts "'Clone' command successfully run"
+    DeployLog.stdout_log.info {"'Clone' command successfully run"}
   end
 end
 
@@ -65,6 +66,10 @@ pre do |global,command,options,args|
   # chosen command
   # Use skips_pre before a command to skip this block
   # on that command only
+  if $global_host.nil?
+    $global_host = global[:host_path]
+  end
+  
   true
 end
 

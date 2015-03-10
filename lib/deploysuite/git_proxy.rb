@@ -13,7 +13,7 @@ module Deploysuite
 
 		    unless status.exitstatus == 0
 				    puts "There was an error running '#{command}'"
-				    # DeployLog.stderr_log.fatal {stderr_str}
+				    DeployLog.stderr_log.fatal {stderr_str}
 				    STDERR.puts stderr_str
 				    exit 1	      
 		    end
