@@ -1,0 +1,83 @@
+#!/usr/bin/env ruby
+require 'gli'
+require 'socket'
+require 'open3'
+require 'logger'
+
+
+begin # XXX: Remove this begin/rescue before distributing your app
+require 'deploysuite'
+rescue LoadError
+  STDERR.puts "In development, you need to use `bundle exec bin/deploysuite` to run your app"
+  STDERR.puts "At install-time, RubyGems will make sure lib, etc. are in the load path"
+  STDERR.puts "Feel free to remove this message from bin/deploysuite now"
+  exit 64
+end
+
+include GLI::App
+include Deploysuite
+
+program_desc 'Command Suite to facilitate git deployment to DEV, QA and PROD servers'
+
+version Deploysuite::VERSION
+
+subcommand_option_handling :normal
+arguments :strict
+
+desc 'Describe some switch here'
+switch [:s,:switch]
+
+desc 'Absolute Path to App: /path/to/app (future or existing app)'
+# default_value 'the default'
+arg_name 'host_path'
+# flag [:f,:flagname]
+flag [:host_path]
+
+desc 'Clone appropriate repo branch into valid server path'
+arg_name 'Describe arguments to clone here'
+command :clone do |c|
+  c.desc 'Describe a switch to clone'
+  c.switch :s
+
+  c.desc 'URL to repo'
+  c.default_value 'git@github.com:account/repo'
+  c.flag [:repo, :r]
+  c.action do |global_options,options,args|
+
+    r = Runner.new
+    r.run_clone(options[:repo], global_options[:host_path])
+
+    STDOUT.puts "'Clone' command successfully run"
+  end
+end
+
+desc 'Describe update here'
+arg_name 'Describe arguments to update here'
+command :update do |c|
+  c.action do |global_options,options,args|
+    puts "update command ran"
+  end
+end
+
+pre do |global,command,options,args|
+  # Pre logic here
+  # Return true to proceed; false to abort and not call the
+  # chosen command
+  # Use skips_pre before a command to skip this block
+  # on that command only
+  true
+end
+
+post do |global,command,options,args|
+  # Post logic here
+  # Use skips_post before a command to skip this
+  # block on that command only
+end
+
+on_error do |exception|
+  # Error logic here
+  # return false to skip default error handling
+  true
+end
+
+exit run(ARGV)
