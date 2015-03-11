@@ -1,6 +1,6 @@
 module Deploysuite
 	class GitProxy
-		def clone(git_branch, repo, host_path)
+		def clone_branch(git_branch, repo, host_path)
 						
 		    command = "git clone -b #{git_branch} #{repo} #{host_path}"
 		    stdout_str, stderr_str, status = Open3.capture3(command)

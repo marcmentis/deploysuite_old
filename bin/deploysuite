@@ -33,10 +33,29 @@ arg_name 'host_path'
 # flag [:f,:flagname]
 flag [:host_path]
 
+
+desc 'Clone appropriate repo branch and validate user, repo, path, app'
+# arg_name 'Describe arguments to clone_new_app here'
+command :clone_new_app do |c|
+  c.desc 'URL to repo'
+  c.default_value 'git@github.com:account/repo'
+  c.flag [:repo, :r]
+  c.action do |global_options,options,args|
+    r = Runner.new
+    r.run_validate_for_clone_branch(options[:repo], global_options[:host_path])
+    r.run_clone_branch(options[:repo], global_options[:host_path])
+
+    STDOUT.puts "'Clone_new_app' command successfully run"
+    DeployLog.stdout_log.info {"'Clone_new_app' command successfully run"}
+
+    # puts "clone_new_app command ran"
+  end
+end
+
 desc 'Clone appropriate repo branch into valid server path'
 arg_name 'Describe arguments to clone here'
-command :clone do |c|
-  c.desc 'Describe a switch to clone'
+command :clone_branch do |c|
+  c.desc 'Describe a switch to clone_branch'
   c.switch :s
 
   c.desc 'URL to repo'
@@ -45,10 +64,10 @@ command :clone do |c|
   c.action do |global_options,options,args|
 
     r = Runner.new
-    r.run_clone(options[:repo], global_options[:host_path])
+    r.run_clone_branch(options[:repo], global_options[:host_path])
 
-    STDOUT.puts "'Clone' command successfully run"
-    DeployLog.stdout_log.info {"'Clone' command successfully run"}
+    STDOUT.puts "'Clone_branch' command successfully run"
+    DeployLog.stdout_log.info {"'Clone_branch' command successfully run"}
   end
 end
 
@@ -69,7 +88,7 @@ pre do |global,command,options,args|
   if $global_host.nil?
     $global_host = global[:host_path]
   end
-  
+
   true
 end
 

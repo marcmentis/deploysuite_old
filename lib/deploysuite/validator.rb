@@ -1,5 +1,6 @@
 module Deploysuite
 	class Validator
+
 		def app_not_exist?(host_path)
 			host_path.downcase
 			if Dir.exists?(host_path)
@@ -46,13 +47,28 @@ module Deploysuite
 			path_to_host = host_path_array.join('/')
 
 			case path_to_host
-				when "/rails/omh", "/rails/omh/pilgrim", "/rails/oasas"
+				when "/rails/omh", "/rails/omh/pilgrim", "/rails/oasas", "/tmp"
 					true
 			else
 				false
 				DeployLog.stderr_log.fatal {"'#{path_to_host}' is not a legal path to an app"}
 				STDERR.puts "'#{path_to_host}' is not a legal path to an app"
 				exit 1
+			end
+		end
+
+		def get_git_branch(machine_name)
+			case machine_name
+				when "omhrord1.omh.ny.gov", "marcs-mbp", "u14"
+					@git_branch = 'dev'
+				when "omhrorq1.omh.ny.gov"
+					@git_branch = 'qa'
+				when "omhrorp1.omh.ny.gov"
+					@git_branch = 'prod'
+				else
+					STDERR.puts "This machine does NOT HAVE permission to run this script.\
+					 						\n\tHostname is: '#{machine_name}' "
+					exit 2
 			end
 		end
 	end

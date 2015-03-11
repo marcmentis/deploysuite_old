@@ -10,19 +10,5 @@ module Deploysuite
 			@machine_name = Socket.gethostname.downcase
 		end
 			
-		def get_git_branch
-			case @machine_name
-				when "omhrord1.omh.ny.gov", "marcs-mbp", "u14"
-					@git_branch = 'dev'
-				when "omhrorq1.omh.ny.gov"
-					@git_branch = 'qa'
-				when "omhrorp1.omh.ny.gov"
-					@git_branch = 'prod'
-				else
-					STDERR.puts "This machine does NOT HAVE permission to run this script.\
-					 						\n\tHostname is: '#{@machine_name}' "
-					exit 2
-			end
-		end
 	end
 end

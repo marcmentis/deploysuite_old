@@ -1,25 +1,25 @@
 module Deploysuite
 	class Runner
-		def run_clone(repo, host_path)
-			# Validations:
-				v = Validator.new
-				# Check that path to app is legal
-				v.path_to_host_legal?(host_path)
-				# Check that app directory does not exist
-				v.app_not_exist?(host_path)
-				# Check that Repo exists and user has privileges
-				v.repo_exists?(repo)
+		def initialize
+			@v = Validator.new
+			@ev = EnvValues.new
+			@g = GitProxy.new
+		end
 
-			# Get env_values
-			env_values = EnvValues.new
-		    machine_name = env_values.machine_name
-		    git_branch = env_values.get_git_branch
+		def run_clone_branch(repo, host_path)
+		    git_branch = @v.get_git_branch(@ev.machine_name)
+		    @g.clone_branch(git_branch, repo, host_path)
+		end
 
-		    # Run clone
-		    g = GitProxy.new
-		    g.clone(git_branch, repo, host_path)
-
-		    # Log
+		def run_validate_for_clone_branch(repo, host_path)
+			# Check that user is member of 'deployers' group
+			
+			# Check that path to app is legal
+			@v.path_to_host_legal?(host_path)
+			# Check that app directory does not exist
+			@v.app_not_exist?(host_path)
+			# Check that Repo exists and user has privileges
+			@v.repo_exists?(repo)
 		end
 		
 	end
