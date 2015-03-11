@@ -4,9 +4,9 @@ module Deploysuite
 		def app_not_exist?(host_path)
 			host_path.downcase
 			if Dir.exists?(host_path)
+				# return false
 				DeployLog.stderr_log.fatal {"The app #{host_path} already exists"}
 				STDERR.puts "The app #{host_path} already exists"
-				false
 				exit 1
 			else
 				true 
@@ -17,8 +17,7 @@ module Deploysuite
 			host_path.downcase
 			unless Dir.exists?(host_path)
 				DeployLog.stderr_log.fatal {"The app #{host_path} does not exist"}
-				STDERR.puts "The app #{host_path} does not exist"
-				false
+				STDERR.puts "The app #{host_path} does not exist"				
 				exit 1
 			else
 				true
@@ -35,8 +34,7 @@ module Deploysuite
 			unless status.exitstatus == 0
 				puts "There was an error running '#{command}'"
 				DeployLog.stderr_log.fatal {stderr_str}
-				STDERR.puts stderr_str
-				false
+				STDERR.puts stderr_str				
 				exit 1
 			end
 		end
@@ -50,7 +48,6 @@ module Deploysuite
 				when "/rails/omh", "/rails/omh/pilgrim", "/rails/oasas", "/tmp"
 					true
 			else
-				false
 				DeployLog.stderr_log.fatal {"'#{path_to_host}' is not a legal path to an app"}
 				STDERR.puts "'#{path_to_host}' is not a legal path to an app"
 				exit 1
@@ -69,6 +66,17 @@ module Deploysuite
 					STDERR.puts "This machine does NOT HAVE permission to run this script.\
 					 						\n\tHostname is: '#{machine_name}' "
 					exit 2
+			end
+		end
+
+		def valid_user?(user, user_group, required_group)
+			if user_group.include? required_group
+				true
+			else			
+				DeployLog.stderr_log.fatal {"'#{user}' is not a member of '#{required_group}' group on this server"}
+				STDERR.puts "'#{user}' is not a member of '#{required_group}' group on this server"
+				exit 1
+
 			end
 		end
 	end
