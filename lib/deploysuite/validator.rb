@@ -4,10 +4,9 @@ module Deploysuite
 		def app_not_exist?(host_path)
 			host_path.downcase
 			if Dir.exists?(host_path)
-				# return false
 				DeployLog.stderr_log.fatal {"The app #{host_path} already exists"}
 				STDERR.puts "The app #{host_path} already exists"
-				exit 1
+				return false
 			else
 				true 
 			end
@@ -17,8 +16,8 @@ module Deploysuite
 			host_path.downcase
 			unless Dir.exists?(host_path)
 				DeployLog.stderr_log.fatal {"The app #{host_path} does not exist"}
-				STDERR.puts "The app #{host_path} does not exist"				
-				exit 1
+				STDERR.puts "The app #{host_path} does not exist"	
+				return false			
 			else
 				true
 			end
@@ -27,19 +26,20 @@ module Deploysuite
 		def repo_exists?(repo)
 			command = "git ls-remote #{repo}"
 			stdout_str, stderr_str, status = Open3.capture3(command)
-			DeployLog.stdout_log.info {"Command: \n\t'#{command}'\n #{stdout_str}"}
-			STDOUT.puts stdout_str
-			return true
-
+			# DeployLog.stdout_log.info {"Repo exists and user has privileges"}
+			# STDOUT.puts "Repo exists and user has privileges"
 			unless status.exitstatus == 0
 				puts "There was an error running '#{command}'"
 				DeployLog.stderr_log.fatal {stderr_str}
-				STDERR.puts stderr_str				
-				exit 1
+				STDERR.puts stderr_str	
+				return false
+			else
+				return true		
 			end
 		end
 
 		def path_to_host_legal?(host_path)
+			host_path.downcase
 			host_path_array = host_path.split('/')
 			host_path_array.pop
 			path_to_host = host_path_array.join('/')
@@ -50,7 +50,7 @@ module Deploysuite
 			else
 				DeployLog.stderr_log.fatal {"'#{path_to_host}' is not a legal path to an app"}
 				STDERR.puts "'#{path_to_host}' is not a legal path to an app"
-				exit 1
+				return false
 			end
 		end
 
@@ -72,11 +72,10 @@ module Deploysuite
 		def valid_user?(user, user_group, required_group)
 			if user_group.include? required_group
 				true
-			else			
+			else
 				DeployLog.stderr_log.fatal {"'#{user}' is not a member of '#{required_group}' group on this server"}
-				STDERR.puts "'#{user}' is not a member of '#{required_group}' group on this server"
-				exit 1
-
+				STDERR.puts "'#{user}' is not a member of '#{required_group}' group on this server"				
+				return false
 			end
 		end
 	end

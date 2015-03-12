@@ -13,13 +13,24 @@ module Deploysuite
 
 		def run_validate_for_clone_branch(repo, host_path)
 			# Check that user is member of 'deployers' group
-			@v.valid_user?(@ev.user, @ev.user_groups, "deployer")
+			unless @v.valid_user?(@ev.user, @ev.user_groups, "deployer")			
+				exit 1
+			end
+			
 			# Check that path to app is legal
-			@v.path_to_host_legal?(host_path)
+			unless @v.path_to_host_legal?(host_path)
+				exit 1
+			end
+			
 			# Check that app directory does not exist
-			@v.app_not_exist?(host_path)
+			unless @v.app_not_exist?(host_path)
+				exit 1
+			end
+			
 			# Check that Repo exists and user has privileges
-			@v.repo_exists?(repo)
+			unless @v.repo_exists?(repo)
+				exit 1
+			end
 		end
 		
 	end
