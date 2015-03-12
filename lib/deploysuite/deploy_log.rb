@@ -3,7 +3,9 @@ module Deploysuite
 		env_values = EnvValues.new
 		USER = env_values.user
 
+
 		def self.stderr_log
+			# User = @ev.user
 			if @logger.nil?
 				@logger = Logger.new "/rails/log/err_log.txt"
 				@logger.level = Logger::WARN

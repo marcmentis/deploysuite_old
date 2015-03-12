@@ -26,8 +26,7 @@ module Deploysuite
 		def repo_exists?(repo)
 			command = "git ls-remote #{repo}"
 			stdout_str, stderr_str, status = Open3.capture3(command)
-			# DeployLog.stdout_log.info {"Repo exists and user has privileges"}
-			# STDOUT.puts "Repo exists and user has privileges"
+
 			unless status.exitstatus == 0
 				puts "There was an error running '#{command}'"
 				DeployLog.stderr_log.fatal {stderr_str}

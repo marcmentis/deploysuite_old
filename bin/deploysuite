@@ -42,13 +42,19 @@ command :clone_new_app do |c|
   c.flag [:repo, :r]
   c.action do |global_options,options,args|
     r = Runner.new
-    r.run_validate_for_clone_branch(options[:repo], global_options[:host_path])
+    # Validations
+    r.run_valid_user?
+    r.run_path_to_host_legal?(global_options[:host_path])
+    r.run_app_not_exist?(global_options[:host_path])
+    r.run_repo_exists?(options[:repo])
+
+    # r.run_validate_for_clone_branch(options[:repo], global_options[:host_path])
+    # Clone the appropriate branch into the sever
     r.run_clone_branch(options[:repo], global_options[:host_path])
 
-    STDOUT.puts "'Clone_new_app' command successfully run"
-    DeployLog.stdout_log.info {"'Clone_new_app' command successfully run"}
+    STDOUT.puts "Success: 'Clone_new_app' command completed without error"
+    DeployLog.stdout_log.info {"Success: 'Clone_new_app' command completed without error"}
 
-    # puts "clone_new_app command ran"
   end
 end
 
