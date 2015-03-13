@@ -27,9 +27,18 @@ module Deploysuite
 			expect(result).to eq true
 		end
 		it "Repo exists and user has rights, expect true" do
+			pending("stub the command to github")
+			# v = Validator.new
+			# repo = "?"
+			# result = v.repo_exists?(repo)
+			# expect(result).to eq false
+		end
+		it "Secret Config file exists, expect true" do
+			`touch /rails/testapp_enc_application.yml`
 			v = Validator.new
-			repo = "git@github.com:marcmentis/trash1.git"
-			result = v.repo_exists?(repo)
+			host_path = "/rails/testapp"
+			result = v.secret_config1?(host_path)
+			`rm /rails/testapp_enc_application.yml`
 			expect(result).to eq true
 		end
 		

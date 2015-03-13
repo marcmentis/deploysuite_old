@@ -48,6 +48,15 @@ module Deploysuite
 				exit 1
 			end
 		end
+
+		# Check that secret_config1 file exists
+		def run_secret_config1?(host_path)
+			if @v.secret_config1?(host_path)
+				STDOUT.puts "Success: secret_config1 exists"
+			else
+				exit 1
+			end
+		end
 			
 	end
 end

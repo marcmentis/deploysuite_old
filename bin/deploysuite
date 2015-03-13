@@ -47,6 +47,7 @@ command :clone_new_app do |c|
     r.run_path_to_host_legal?(global_options[:host_path])
     r.run_app_not_exist?(global_options[:host_path])
     r.run_repo_exists?(options[:repo])
+    r.run_secret_config1?(global_options[:host_path])
 
     # r.run_validate_for_clone_branch(options[:repo], global_options[:host_path])
     # Clone the appropriate branch into the sever
