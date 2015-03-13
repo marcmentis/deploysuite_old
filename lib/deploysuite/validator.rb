@@ -5,7 +5,7 @@ module Deploysuite
 			host_path.downcase
 			if Dir.exists?(host_path)
 				DeployLog.stderr_log.fatal {"The app #{host_path} already exists"}
-				STDERR.puts "The app #{host_path} already exists"
+				STDERR.puts Rainbow("ERROR: The app #{host_path} already exists").red
 				return false
 			else
 				true 
@@ -15,8 +15,7 @@ module Deploysuite
 		def app_exists?(host_path)
 			host_path.downcase
 			unless Dir.exists?(host_path)
-				DeployLog.stderr_log.fatal {"The app #{host_path} does not exist"}
-				STDERR.puts "The app #{host_path} does not exist"	
+				STDERR.puts Rainbow("The app #{host_path} does not exist").red	
 				return false			
 			else
 				true
@@ -28,9 +27,8 @@ module Deploysuite
 			stdout_str, stderr_str, status = Open3.capture3(command)
 
 			unless status.exitstatus == 0
-				puts "There was an error running '#{command}'"
 				DeployLog.stderr_log.fatal {stderr_str}
-				STDERR.puts stderr_str	
+				STDERR.puts Rainbow(stderr_str).red	
 				return false
 			else
 				return true		
@@ -38,7 +36,8 @@ module Deploysuite
 		end
 
 		def path_to_host_legal?(host_path)
-			# path_to_host is directory that contains the app (app = host_path)
+			# 'host_path' is the full path to the app i.e., /rails/omh/app1
+			# 'path_to_app' is path to div that holds app i.e., /rails/omh
 			path_to_host = get_path_to_host(host_path)
 
 			case path_to_host
@@ -46,7 +45,7 @@ module Deploysuite
 					true
 			else
 				DeployLog.stderr_log.fatal {"'#{path_to_host}' is not a legal path to an app"}
-				STDERR.puts "'#{path_to_host}' is not a legal path to an app"
+				STDERR.puts Rainbow("ERROR: '#{path_to_host}' is not a legal path to an app").red
 				return false
 			end
 		end
@@ -60,9 +59,8 @@ module Deploysuite
 				when "omhrorp1.omh.ny.gov"
 					@git_branch = 'prod'
 				else
-					STDERR.puts "This machine does NOT HAVE permission to run this script.\
-					 						\n\tHostname is: '#{machine_name}' "
-					exit 2
+					STDERR.puts Rainbow("ERROR: This machine '#{machine_name}' does NOT have permission to run this app.").red
+					exit 1
 			end
 		end
 
@@ -71,7 +69,7 @@ module Deploysuite
 				true
 			else
 				DeployLog.stderr_log.fatal {"'#{user}' is not a member of '#{required_group}' group on this server"}
-				STDERR.puts "'#{user}' is not a member of '#{required_group}' group on this server"				
+				STDERR.puts Rainbow("ERROR: '#{user}' is not a member of '#{required_group}' group on this server").red				
 				return false
 			end
 		end
@@ -82,14 +80,16 @@ module Deploysuite
 			if File.exists?("/rails/#{secret_config1}")
 				true
 			else
-				DeployLog.stderr_log.fatal {"'#{secret_config1}'' does not exist"}
-				STDERR.puts {"'#{secret_config1}'' does not exist"}
+				DeployLog.stderr_log.fatal {" Config file '#{secret_config1}' does not exist"}
+				STDERR.puts  Rainbow("ERROR: Config file '#{secret_config1}' does not exist").red 
 				return false
 			end
 		end
 
 
 		def get_path_to_host(host_path)
+			# 'host_path' is the full path to the app i.e., /rails/omh/app1
+			# 'path_to_app' is path to div that holds app i.e., /rails/omh
 			host_path.downcase
 			host_path_array = host_path.split('/')
 			host_path_array.pop
