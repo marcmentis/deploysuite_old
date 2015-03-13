@@ -3,6 +3,7 @@ require 'gli'
 require 'socket'
 require 'open3'
 require 'logger'
+require 'rainbow'
 
 
 begin # XXX: Remove this begin/rescue before distributing your app
@@ -48,12 +49,10 @@ command :clone_new_app do |c|
     r.run_app_not_exist?(global_options[:host_path])
     r.run_repo_exists?(options[:repo])
     r.run_secret_config1?(global_options[:host_path])
-
-    # r.run_validate_for_clone_branch(options[:repo], global_options[:host_path])
     # Clone the appropriate branch into the sever
     r.run_clone_branch(options[:repo], global_options[:host_path])
 
-    STDOUT.puts "Success: 'Clone_new_app' command completed without error"
+    STDOUT.puts Rainbow("Success: 'Clone_new_app' command completed without error").bright.green
     DeployLog.stdout_log.info {"Success: 'Clone_new_app' command completed without error"}
 
   end
