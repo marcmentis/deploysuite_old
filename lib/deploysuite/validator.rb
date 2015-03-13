@@ -51,13 +51,6 @@ module Deploysuite
 			end
 		end
 
-		def get_path_to_host(host_path)
-			host_path.downcase
-			host_path_array = host_path.split('/')
-			host_path_array.pop
-			path_to_host = host_path_array.join('/')
-		end
-
 		def get_git_branch(machine_name)
 			case machine_name
 				when "omhrord1.omh.ny.gov", "marcs-mbp", "u14"
@@ -93,6 +86,14 @@ module Deploysuite
 				STDERR.puts {"'#{secret_config1}'' does not exist"}
 				return false
 			end
+		end
+
+
+		def get_path_to_host(host_path)
+			host_path.downcase
+			host_path_array = host_path.split('/')
+			host_path_array.pop
+			path_to_host = host_path_array.join('/')
 		end
 
 		def get_app_name(host_path)
