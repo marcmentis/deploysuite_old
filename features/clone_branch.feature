@@ -22,7 +22,7 @@ Feature: deployer clones the appropriate repo branch into a valid server path
 	Scenario: 'clone_branch' command runs successfully
 		Given app /tmp/test_app does not exist
 		When I successfully run `deploysuite --host_path=/tmp/test_app clone_branch -r 'git@github.com:marcmentis/trash1.git'` 
-		Then the stdout should contain "'Clone_branch' command successfully run"
+		Then the stdout should contain "Success: 'Clone_branch' command completed"
 		Then remove app /tmp/test_app
 
 

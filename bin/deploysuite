@@ -42,7 +42,7 @@ command :clone_new_app do |c|
   c.default_value 'git@github.com:account/repo'
   c.flag [:repo, :r]
   c.action do |global_options,options,args|
-    r = Runner.new
+    r = Runner.new(validator: Validator.new, env_values:EnvValues.new, git_proxy: GitProxy.new)
     # Validations
     r.run_valid_user?
     r.run_path_to_host_legal?(global_options[:host_path])
@@ -69,11 +69,11 @@ command :clone_branch do |c|
   c.flag [:repo, :r]
   c.action do |global_options,options,args|
 
-    r = Runner.new
+    r = Runner.new(validator: Validator.new, env_values: EnvValues.new, git_proxy: GitProxy.new)
     r.run_clone_branch(options[:repo], global_options[:host_path])
 
-    STDOUT.puts "'Clone_branch' command successfully run"
-    DeployLog.stdout_log.info {"'Clone_branch' command successfully run"}
+    STDOUT.puts "Success: 'Clone_branch' command completed"
+    DeployLog.stdout_log.info {"Success: 'Clone_branch' command completed"}
   end
 end
 

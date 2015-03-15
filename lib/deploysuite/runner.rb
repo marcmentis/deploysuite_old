@@ -2,22 +2,10 @@ module Deploysuite
 	class Runner
 		attr_reader :v, :ev, :g
 
-		def initialize(v=nil, ev=nil, g=nil)
-			@v = v
-			@ev = ev
-			@g = g
-		end
-
-		def v
-			@v = Validator.new
-		end
-
-		def ev
-			@ev = EnvValues.new
-		end
-
-		def g
-			@g = GitProxy.new
+		def initialize(args)
+			@v = args[:validator] 
+			@ev = args[:env_values] 
+			@g = args[:git_proxy] 
 		end
 
 		def run_clone_branch(repo, host_path)
