@@ -4,6 +4,7 @@ require 'socket'
 require 'open3'
 require 'logger'
 require 'rainbow'
+# require 'fileutils'
 
 
 begin # XXX: Remove this begin/rescue before distributing your app
