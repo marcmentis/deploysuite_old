@@ -24,6 +24,15 @@ module Deploysuite
 			STDOUT.puts Rainbow("Success: #{file} moved to #{final_path}").green
 		end
 
+		def run_set_app_privileges_ownership(host_path)
+			final_deployer_group = v.get_final_deployer_group(host_path)
+			u.set_app_group_ownership(host_path, final_deployer_group)
+			u.set_app_permissions(host_path)
+			app_name = v.get_app_name(host_path)
+
+			STDOUT.puts Rainbow("Success: Group ownership and privileges set for #{app_name}").green
+		end
+
 		# VALIDATIONS
 		# Check that app directory does not exist
 		def run_app_not_exist?(host_path)
@@ -31,6 +40,16 @@ module Deploysuite
 				STDOUT.puts Rainbow("Success: No pre-existig app at '#{host_path}'").green
 			else
 				exit 1
+			end
+		end
+
+		# Check that user is member of 'final_deployer_group'
+		def run_in_final_deployer_group?(host_path)
+			path_to_host = v.get_path_to_host(host_path)
+			if v.in_final_deployer_group?(ev.user, ev.user_groups, host_path)
+				STDOUT.puts Rainbow("Success: '#{ev.user}' is member of '#{path_to_host}' group").green
+			else
+				
 			end
 		end
 

@@ -64,12 +64,13 @@ module Deploysuite
 			end
 		end
 
-		def valid_user?(user, user_group, required_group)
-			if user_group.include? required_group
+		def in_final_deployer_group?(user, user_groups, host_path)
+			final_deployer_group = get_final_deployer_group(host_path)
+			if user_groups.include? final_deployer_group
 				true
 			else
-				DeployLog.stderr_log.fatal {"'#{user}' is not a member of '#{required_group}' group on this server"}
-				STDERR.puts Rainbow("ERROR: '#{user}' is not a member of '#{required_group}' group on this server").red				
+				DeployLog.stderr_log.fatal {"'#{user}' is not a member of '#{final_deployer_group}' group on this server"}
+				STDERR.puts Rainbow("ERROR: '#{user}' is not a member of '#{final_deployer_group}' group on this server").red				
 				return false
 			end
 		end
@@ -100,6 +101,24 @@ module Deploysuite
 			host_path.downcase
 			arr = host_path.split('/')
 			app_name = arr.pop
+		end
+
+		def get_final_deployer_group(host_path)
+			host_path.downcase
+			path_to_host = get_path_to_host(host_path)
+			case path_to_host
+				when "/tmp"
+					final_deployer_group = "omhdep"
+				when "/rails/omh"
+					final_deployer_group = "omhdep"
+				when "/rails/omh/pilg"
+					final_deployer_group = "omh_pilg_dep"
+				when "/rails/oasasdep"
+					final_deployer_group = "oasasdep"
+				else
+					DeployLog.stderr_log.fatal {" There is no deployer group associated with '#{host_path}'"}
+					STDERR.puts  Rainbow("ERROR: There is no deployer group associated with '#{host_path}'").red 
+			end
 		end
 	end
 end

@@ -20,5 +20,27 @@ module Deploysuite
 		    end
 		    return "Success: method completed"
 		end
+
+		def set_app_group_ownership(host_path, final_deployer_group)
+			cmd = "`chown -R :#{final_deployer_group} #{host_path}`"
+			stdout_str, stderr_str, status = Open3.capture3(cmd)
+
+			unless status.exitstatus == 0
+				    DeployLog.stderr_log.fatal {stderr_str}
+				    STDERR.puts Rainbow("ERROR: #{stderr_str} ").red
+				    exit 1	      
+		    end
+		end
+
+		def set_app_permissions(host_path)
+			cmd = "`chmod -R 775 #{host_path}`"
+			stdout_str, stderr_str, status = Open3.capture3(cmd)
+
+			unless status.exitstatus == 0
+				    DeployLog.stderr_log.fatal {stderr_str}
+				    STDERR.puts Rainbow("ERROR: #{stderr_str} ").red
+				    exit 1	      
+		    end
+		end
 	end
 end

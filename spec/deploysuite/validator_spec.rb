@@ -2,13 +2,22 @@ require 'spec_helper'
 
 module Deploysuite
 	describe Validator do
-		it "User belongs to given group, expect true" do
-			v = Validator.new
-			user = 'marcmentis'
-			user_group = "staff _developer some_other_group deployer"
-			required_group = 'deployer'
+		# it "User belongs to given group, expect true" do
+		# 	v = Validator.new
+		# 	user = 'marcmentis'
+		# 	user_group = "staff _developer some_other_group deployer"
+		# 	required_group = 'deployer'
 
-			result = v.valid_user?(user, user_group, required_group)
+		# 	result = v.valid_user?(user, user_group, required_group)
+		# 	expect(result).to eq true
+		# end
+		it "Deployer belongs to final_deployer_group, expect true" do
+			v = Validator.new
+			user = 'testuser'
+			user_group = "railsdep omhdep omh_pilg_dep oasasdep"
+			host_path = "/rails/omh/testapp"
+
+			result = v.in_final_deployer_group?(user, user_group, host_path)
 			expect(result).to eq true
 		end
 		it "Path to host legal, expect true" do
@@ -41,6 +50,13 @@ module Deploysuite
 			`rm /rails/testapp_enc_application.yml`
 			expect(result).to eq true
 		end
+		it "gets final_deployer_group, expect omhdep" do
+			v = Validator.new
+			host_path = "/rails/omh/testapp"
+			result = v.get_final_deployer_group(host_path)
+			expect(result).to eq "omhdep"
+		end
+
 		
 	end
 end

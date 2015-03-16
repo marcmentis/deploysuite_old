@@ -12,6 +12,32 @@ module Deploysuite
 			`rm -Rf /tmp/config`
 			expect(result).to include("Success")
 		end
-		
+
+		it "changes ownership of group for app folders/files" do
+			u = UtilsProxy.new
+			`mkdir /tmp/testapp`
+			`touch /tmp/testapp/testfile.txt`
+			host_path = "/tmp/testapp"
+			final_deployer_group = "railsdep"
+
+			u.set_app_group_ownership(host_path, final_deployer_group)
+
+			file_group = `find /tmp/testapp -group railsdep`
+			expect(file_group).to include("/tmp/testapp/testfile.txt")
+			`rm -Rf /tmp/testapp`
+		end
+
+		it "changes privileges for app folders/files" do
+			u = UtilsProxy.new
+			`mkdir /tmp/testapp`
+			`touch /tmp/testapp/testfile.txt`
+			host_path = "/tmp/testapp"
+
+			u.set_app_permissions(host_path)
+
+			file_privileges = `ls -l /tmp/testapp/testfile.txt`
+			expect(file_privileges).to include("-rwxrwxr-x")
+			`rm -Rf /tmp/testapp`
+		end				
 	end
 end
