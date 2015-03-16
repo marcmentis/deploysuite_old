@@ -1,4 +1,5 @@
-
+# require 'open3'
+require 'rainbow'
 module Deploysuite
 	class UtilsProxy
 		def move_secret_file(file, host_path)
@@ -6,10 +7,18 @@ module Deploysuite
 			# cmd = "FileUtils.mv(#{file}, #{host_path})"
 			cmd = "`mv #{file} #{final_path}`"
 			stdout_str, stderr_str, status = Open3.capture3(cmd)
-			puts "stdout_str: #{stdout_str}"
-			puts "stderr_str: #{stderr_str}"
-			puts "status: #{status}"
-			puts "status.exitstatus: #{status.exitstatus}"
+
+			# puts "stdout_str: #{stdout_str}"
+			# puts "stderr_str: #{stderr_str}"
+			# puts "status: #{status}"
+			# puts "status.exitstatus: #{status.exitstatus}"
+
+			unless status.exitstatus == 0
+				    DeployLog.stderr_log.fatal {stderr_str}
+				    STDERR.puts Rainbow("ERROR: #{stderr_str} ").red
+				    exit 1	      
+		    end
+		    return "Success: method completed"
 		end
 	end
 end

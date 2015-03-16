@@ -5,11 +5,12 @@ module Deploysuite
 		it "moves secret file to app/config folder" do
 			u = UtilsProxy.new
 			`touch /tmp/testfile.txt`
-			# `mkdir /tmp/config`
+			`mkdir /tmp/config`
 			file = "/tmp/testfile.txt"
 			host_path = "/tmp"
 			result = u.move_secret_file(file, host_path)
-			# `rm -Rf /tmp/config`
+			`rm -Rf /tmp/config`
+			expect(result).to include("Success")
 		end
 		
 	end

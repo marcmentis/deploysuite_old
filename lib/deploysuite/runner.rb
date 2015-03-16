@@ -1,17 +1,27 @@
 module Deploysuite
 	class Runner
-		attr_reader :v, :ev, :g
+		attr_reader :v, :ev, :g, :u
 
 		def initialize(args)
 			@v = args[:validator] 
 			@ev = args[:env_values] 
 			@g = args[:git_proxy] 
+			@u = args[:utils_proxy]
 		end
 
 		def run_clone_branch(repo, host_path)
 		    git_branch = v.get_git_branch(ev.machine_name)
 		    g.clone_branch(git_branch, repo, host_path)
 		    STDOUT.puts Rainbow("Success: '#{repo}' cloned into '#{host_path}'").green
+		end
+
+		def run_move_secret_file(host_path)
+			app_name = v.get_app_name(host_path)
+			file = "/rails/#{app_name}_enc_application.yml"
+			final_path = "#{host_path}/config/enc_application.yml"
+			u.move_secret_file(file, host_path)
+
+			STDOUT.puts Rainbow("Success: #{file} moved to #{final_path}").green
 		end
 
 		# VALIDATIONS
