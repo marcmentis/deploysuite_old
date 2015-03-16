@@ -7,7 +7,7 @@ Feature: deployer clones new app
 	Usage example: $ deploysuite --host_path=/path/to/host clone_new_app repo/url
 
 	The 'clone_new_app' command will perform the following functions:
-		1. Verification:(i)The user belongs to the 'deployers' group on the server, (ii) the path to the host is legal, (iii) the app does not exist at the given host_path, (iv) the repo exist and the deployer has appropriate privileges, (v) the secret '<appname>_enc_application.yml' file exists. 
+		1. Verification:(i)The user belongs to the 'railsdep' group on the server, (ii) the path to the host is legal, (iii) the app does not exist at the given host_path, (iv) the repo exist and the deployer has appropriate privileges, (v) the secret '<appname>_enc_application.yml' file exists. 
 		2. Clone the appropriate repo-branch into the server
 		3. Move the secret config file from '/rails/<appname>_enc_application.yml' to /host/path/config/enc_application.yml.
 		4. Change the group/privilege assignmets for all the app files

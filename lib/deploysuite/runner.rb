@@ -36,8 +36,8 @@ module Deploysuite
 
 		# Check that user is member of 'deployers' group
 		def run_valid_user?
-			if v.valid_user?(ev.user, ev.user_groups, "deployer")
-				STDOUT.puts Rainbow("Success: '#{ev.user}' is member of 'deployer' group").green
+			if v.valid_user?(ev.user, ev.user_groups, "railsdep")
+				STDOUT.puts Rainbow("Success: '#{ev.user}' is member of 'railsdep' group").green
 			else
 				exit 1
 			end
