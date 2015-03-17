@@ -14,7 +14,8 @@ module Deploysuite
 		    unless status.exitstatus == 0
 				    puts "There was an error running '#{command}'"
 				    DeployLog.stderr_log.fatal {stderr_str}
-				    STDERR.puts stderr_str
+				    # STDERR.puts stderr_str
+				    STDERR.puts Rainbow("ERROR: #{stderr_str} ").red
 				    exit 1	      
 		    end
 		     

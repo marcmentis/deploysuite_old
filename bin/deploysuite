@@ -71,7 +71,7 @@ command :clone_branch do |c|
   c.default_value 'git@github.com:account/repo'
   c.flag [:repo, :r]
   c.action do |global_options,options,args|
-    deployer_groups = {omh: 'omhdep', pilg: 'omh_pilg_dep', oasas:'oasasdep'}
+    # deployer_groups = {omh: 'omhdep', pilg: 'omh_pilg_dep', oasas:'oasasdep'}
 
     r = Runner.new(validator: Validator.new, env_values: EnvValues.new, git_proxy: GitProxy.new)
     r.run_clone_branch(options[:repo], global_options[:host_path])
@@ -79,6 +79,17 @@ command :clone_branch do |c|
     STDOUT.puts "Success: 'Clone_branch' command completed"
     DeployLog.stdout_log.info {"Success: 'Clone_branch' command completed"}
   end
+end
+
+desc 'Run bundle command for an application'
+command :bundle do |c|
+  c.action do |global_options|
+    r = Runner.new(rails_proxy: RailsProxy.new)
+    # Dir.chdir("#{global_options[:host_path]}") do
+      r.run_bundle(global_options[:host_path])
+    # end
+  end
+  
 end
 
 desc 'Describe update here'

@@ -28,3 +28,9 @@ end
 Then(/^remove secret_config1 file$/) do
   `rm /rails/test_app_enc_application.yml`
 end
+
+Then(/^clone test_app$/) do
+ 	`touch /tmp/stdout.txt`
+  	`git clone -b dev git@github.com:marcmentis/trash1.git /tmp/test_app 2>/tmp/stdout.txt`
+  	`rm /tmp/stdout.txt`
+end
