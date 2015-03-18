@@ -1,4 +1,4 @@
-require 'socket'  # needed for RSpec
+# require 'socket'  # needed for RSpec
 
 module Deploysuite
 	class EnvValues

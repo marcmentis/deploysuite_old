@@ -1,3 +1,8 @@
+require 'socket'
+require 'open3'
+require 'logger'
+require 'rainbow'
+
 require 'deploysuite/version.rb'
 require 'deploysuite/runner.rb'
 require 'deploysuite/git_proxy.rb'

@@ -1,5 +1,5 @@
-# require 'open3'
-require 'rainbow'
+
+# require 'rainbow'
 module Deploysuite
 	class UtilsProxy
 		def move_secret_file(file, host_path)
