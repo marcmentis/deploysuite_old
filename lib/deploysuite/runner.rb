@@ -92,7 +92,7 @@ module Deploysuite
 		end
 
 		def run_check_pwd(host_path)
-			r.check_pwd(host_path)
+			u.check_pwd(host_path)
 			STDOUT.puts Rainbow("Success: 'deploysuite' run from root dir of app: '#{host_path}'").green
 		end
 
@@ -106,13 +106,32 @@ module Deploysuite
 			STDOUT.puts Rainbow("Success: Production env assets precompiled for app").green
 		end
 
+		def run_prepare_db
+			git_branch = v.get_git_branch(ev.machine_name)
+			if git_branch == 'dev'
+				run_load_schema
+			else
+				run_generate_sql_script
+			end
+		end
+
+		def run_load_schema
+			r.load_schema
+			STDOUT.puts Rainbow("Success: Schema loaded").green
+		end
+
+		def run_generate_sql_script
+			r.generate_sql_script 
+			STDOUT.puts Rainbow("Success: SQL script for DB migrations generated").green
+		end
+
 		def run_first_commit
-			r.first_commit
+			g.first_commit
 			STDOUT.puts Rainbow("Success: First Commit performed for app").green
 		end
 
 		def run_start_application
-			r.start_application
+			u.start_application
 			STDOUT.puts Rainbow("Success: Application restarted").green
 		end
 

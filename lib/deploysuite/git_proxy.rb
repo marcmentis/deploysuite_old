@@ -27,5 +27,29 @@ module Deploysuite
 		    STDOUT.puts output
 			
 		end
+
+		def first_commit
+			cmd = "git add ."
+			process_cmd(cmd,'stdout')
+			# STDOUT.puts stdout_str	
+
+			cmd = "git commit -m 'First Commit'"
+			process_cmd(cmd,'sdtout')
+			# STDOUT.puts stdout_str				
+		end
+
+		def process_cmd(cmd,stdout=false)
+			# puts "IN process_cmd"
+			stdout_str, stderr_str, status = Open3.capture3(cmd)
+			unless status.exitstatus == 0
+				DeployLog.stderr_log.fatal {stderr_str}
+			    STDERR.puts Rainbow("ERROR: #{stderr_str} ").red
+			    exit 1	
+			end
+
+			unless stdout == false
+				return stdout_str
+			end
+		end
 	end
 end
