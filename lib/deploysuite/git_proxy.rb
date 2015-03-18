@@ -34,7 +34,7 @@ module Deploysuite
 			# STDOUT.puts stdout_str	
 
 			cmd = "git commit -m 'First Commit'"
-			process_cmd(cmd,'sdtout')
+			process_cmd(cmd,'stdout')
 			# STDOUT.puts stdout_str				
 		end
 
@@ -48,7 +48,7 @@ module Deploysuite
 			end
 
 			unless stdout == false
-				return stdout_str
+				STDOUT.puts stdout_str
 			end
 		end
 	end

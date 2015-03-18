@@ -68,15 +68,13 @@ command :clone_new_app2 do |c|
   c.switch [:db]  # --no-db is false by default
   c.action do |global_options,options|
     r = Runner.new(rails_proxy: RailsProxy.new, validator: Validator.new, utils_proxy: UtilsProxy.new, env_values:EnvValues.new, git_proxy: GitProxy.new)
-    # r.run_check_pwd(global_options[:host_path])
-    # r.run_bundle
-    # r.run_precompile_assets
-
-    # r.run_prepare_db if options[:db]
-  
+    r.run_check_pwd(global_options[:host_path])
+    r.run_bundle
+    r.run_precompile_assets
+    r.run_prepare_db if options[:db]
     r.run_first_commit
-    # r.run_start_application
-    # r.run_set_app_privileges_ownership(global_options[:host_path])
+    r.run_start_application
+    r.run_set_app_privileges_ownership(global_options[:host_path])
 
     STDOUT.puts Rainbow("Success: 'clone_new_app2' command completed").bright.green
     DeployLog.stdout_log.info {"Success: 'clone_new_app2' command completed"}
