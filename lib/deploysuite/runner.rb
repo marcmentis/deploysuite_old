@@ -10,17 +10,6 @@ module Deploysuite
 			@r = args[:rails_proxy]
 		end
 
-		def run_clone_branch(repo, host_path)
-		    git_branch = v.get_git_branch(ev.machine_name)
-		    g.clone_branch(git_branch, repo, host_path)
-		    STDOUT.puts Rainbow("Success: '#{repo}' cloned into '#{host_path}'").green
-		end
-
-		def run_bundle(host_path)
-			r.bundle(host_path)
-			STDOUT.puts Rainbow("Success: 'bundle' command run for app '#{host_path}'").green
-		end
-
 		def run_move_secret_file(host_path)
 			app_name = v.get_app_name(host_path)
 			file = "/rails/#{app_name}_enc_application.yml"
@@ -95,6 +84,39 @@ module Deploysuite
 				exit 1
 			end
 		end
+
+		def run_clone_branch(repo, host_path)
+		    git_branch = v.get_git_branch(ev.machine_name)
+		    g.clone_branch(git_branch, repo, host_path)
+		    STDOUT.puts Rainbow("Success: '#{repo}' cloned into '#{host_path}'").green
+		end
+
+		def run_check_pwd(host_path)
+			r.check_pwd(host_path)
+			STDOUT.puts Rainbow("Success: 'deploysuite' run from root dir of app: '#{host_path}'").green
+		end
+
+		def run_bundle
+			r.bundle
+			STDOUT.puts Rainbow("Success: Production env 'bundle' command run for app").green
+		end
+
+		def run_precompile_assets
+			r.precompile_assets
+			STDOUT.puts Rainbow("Success: Production env assets precompiled for app").green
+		end
+
+		def run_first_commit
+			r.first_commit
+			STDOUT.puts Rainbow("Success: First Commit performed for app").green
+		end
+
+		def run_start_application
+			r.start_application
+			STDOUT.puts Rainbow("Success: Application restarted").green
+		end
+
+		
 			
 	end
 end
