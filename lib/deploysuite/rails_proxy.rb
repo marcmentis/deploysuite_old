@@ -2,7 +2,7 @@ module Deploysuite
 	class RailsProxy
 
 		def bundle
-			cmd = "bundle --without development test"
+			cmd = "cd /tmp/test_app; bundle --without development test"
 			process_cmd(cmd,'stdout')
 	    	# STDOUT.puts stdout_str		
 		end
