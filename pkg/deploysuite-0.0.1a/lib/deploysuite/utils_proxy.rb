@@ -11,13 +11,13 @@ module Deploysuite
 
 		def start_application
 			cmd = "touch tmp/restart.txt"
-			process_cmd(cmd,'stdout')	
+			process_cmd(cmd)	
 		end
 
 		def move_secret_file(file, host_path)
 			final_path = "#{host_path}/config/enc_application.yml"
 			cmd = "mv #{file} #{final_path}"
-			process_cmd(cmd,'stdout')
+			process_cmd(cmd)
 		
 		    return "Success: method completed"
 		end

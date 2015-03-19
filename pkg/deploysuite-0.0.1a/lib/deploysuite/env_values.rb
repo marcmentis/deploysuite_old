@@ -1,5 +1,3 @@
-# require 'socket'  # needed for RSpec
-
 module Deploysuite
 	class EnvValues
 		# attr_accessor :USER

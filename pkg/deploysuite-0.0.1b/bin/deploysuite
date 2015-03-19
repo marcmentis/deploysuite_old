@@ -1,0 +1,147 @@
+#!/usr/bin/env ruby
+require 'gli'
+require 'deploysuite'
+# require 'socket'
+# require 'open3'
+# require 'logger'
+# require 'rainbow'
+
+
+
+# begin # XXX: Remove this begin/rescue before distributing your app
+# require 'deploysuite'
+# rescue LoadError
+#   STDERR.puts "In development, you need to use `bundle exec bin/deploysuite` to run your app"
+#   STDERR.puts "At install-time, RubyGems will make sure lib, etc. are in the load path"
+#   STDERR.puts "Feel free to remove this message from bin/deploysuite now"
+#   exit 64
+# end
+
+include GLI::App
+include Deploysuite
+
+program_desc 'Command Suite to facilitate git deployment to DEV, QA and PROD servers'
+
+version Deploysuite::VERSION
+
+subcommand_option_handling :normal
+arguments :strict
+
+desc 'Describe some switch here'
+switch [:s,:switch]
+
+desc 'Absolute Path to App: /path/to/app (future or existing app)'
+# default_value 'the default'
+arg_name 'host_path'
+# flag [:f,:flagname]
+flag [:host_path]
+
+
+desc 'Clone appropriate repo branch and validate user, repo, path, app'
+# arg_name 'Describe arguments to clone_new_app here'
+command :clone_new_app do |c|
+  c.desc 'URL to repo'
+  c.default_value 'git@github.com:account/repo'
+  c.flag [:repo, :r]
+  c.action do |global_options,options,args|
+    r = Runner.new(validator: Validator.new, env_values:EnvValues.new, git_proxy: GitProxy.new, utils_proxy: UtilsProxy.new)
+    # Validations
+    r.run_in_final_deployer_group?(global_options[:host_path])
+    r.run_path_to_host_legal?(global_options[:host_path])
+    r.run_app_not_exist?(global_options[:host_path])
+    r.run_repo_exists?(options[:repo])
+    r.run_secret_config1?(global_options[:host_path])
+    r.run_clone_branch(options[:repo], global_options[:host_path])
+    r.run_move_secret_file(global_options[:host_path])
+    r.run_set_app_privileges_ownership(global_options[:host_path])
+
+    STDOUT.puts Rainbow("Success: 'Clone_new_app' command completed without error").bright.green
+    DeployLog.stdout_log.info {"Success: 'Clone_new_app' command completed without error"}
+
+  end
+end
+
+desc 'Complete the setup of newly cloned repo branch from within root dir'
+command :clone_new_app2 do |c|
+  c.desc 'Create DB or SQL code as appropriate'
+  c.switch [:db]  # --no-db is false by default
+  c.action do |global_options,options|
+    r = Runner.new(rails_proxy: RailsProxy.new, validator: Validator.new, utils_proxy: UtilsProxy.new, env_values:EnvValues.new, git_proxy: GitProxy.new)
+    r.run_check_pwd(global_options[:host_path])
+    r.run_bundle
+    r.run_precompile_assets
+    r.run_prepare_db if options[:db]
+    r.run_first_commit
+    r.run_start_application
+    r.run_set_app_privileges_ownership(global_options[:host_path])
+
+    STDOUT.puts Rainbow("Success: 'clone_new_app2' command completed").bright.green
+    DeployLog.stdout_log.info {"Success: 'clone_new_app2' command completed"}
+  end
+end
+
+desc 'Clone appropriate repo branch into valid server path'
+arg_name 'Describe arguments to clone here'
+command :clone_branch do |c|
+  c.desc 'Describe a switch to clone_branch'
+  c.switch :s
+
+  c.desc 'URL to repo'
+  c.default_value 'git@github.com:account/repo'
+  c.flag [:repo, :r]
+  c.action do |global_options,options,args|
+    # deployer_groups = {omh: 'omhdep', pilg: 'omh_pilg_dep', oasas:'oasasdep'}
+
+    r = Runner.new(validator: Validator.new, env_values: EnvValues.new, git_proxy: GitProxy.new)
+    r.run_clone_branch(options[:repo], global_options[:host_path])
+
+    # STDOUT.puts "Success: 'Clone_branch' command completed"
+    # DeployLog.stdout_log.info {"Success: 'Clone_branch' command completed"}
+  end
+end
+
+
+
+desc 'Run bundle command for application production environment only'
+command :bundle do |c|
+  c.action do |global_options|
+    r = Runner.new(rails_proxy: RailsProxy.new)
+    r.run_bundle(global_options[:host_path])
+  end
+  
+end
+
+desc 'Describe update here'
+arg_name 'Describe arguments to update here'
+command :update do |c|
+  c.action do |global_options,options,args|
+    puts "update command ran"
+  end
+end
+
+pre do |global,command,options,args|
+  # Pre logic here
+  # Return true to proceed; false to abort and not call the
+  # chosen command
+  # Use skips_pre before a command to skip this block
+  # on that command only
+  if $global_host.nil?
+    $global_host = global[:host_path]
+  end
+
+  true
+end
+
+post do |global,command,options,args|
+  # Post logic here
+  # Use skips_post before a command to skip this
+  # block on that command only
+end
+
+on_error do |exception|
+  # Error logic here
+  # return false to skip default error handling
+  true
+end
+
+exit run(ARGV)
