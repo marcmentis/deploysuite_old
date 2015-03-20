@@ -42,4 +42,9 @@ require 'rainbow'
 			# STDOUT.puts stdout_str	
 		end
 
-precompile_assets
+		def rspec_tests
+			cmd = "bundle exec rspec spec"
+			process_cmd(cmd,'stdout')
+		end
+
+rspec_tests

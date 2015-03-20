@@ -44,7 +44,7 @@ command :clone_new_app do |c|
   c.default_value 'git@github.com:account/repo'
   c.flag [:repo, :r]
   c.action do |global_options,options,args|
-    r = Runner.new(validator: Validator.new, env_values:EnvValues.new, git_proxy: GitProxy.new, utils_proxy: UtilsProxy.new)
+    r = Runner.new(validator: Validator.new, env_values: EnvValues.new, git_proxy: GitProxy.new, utils_proxy: UtilsProxy.new)
     # Validations
     r.run_in_final_deployer_group?(global_options[:host_path])
     r.run_path_to_host_legal?(global_options[:host_path])
