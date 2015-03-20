@@ -74,6 +74,8 @@ command :clone_new_app2 do |c|
     r.run_first_commit
     r.run_start_application
     r.run_set_app_privileges_ownership(global_options[:host_path])
+    r.run_rspec_tests
+    r.run_cucumber_tests
 
     STDOUT.puts Rainbow("Success: 'clone_new_app2' command completed").bright.green
     DeployLog.stdout_log.info {"Success: 'clone_new_app2' command completed"}

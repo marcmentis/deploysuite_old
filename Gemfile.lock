@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    deploysuite (0.0.1b)
+    deploysuite (0.0.1c)
       gli (= 2.12.2)
       rainbow
 
@@ -33,9 +33,11 @@ GEM
     rake (10.4.2)
     rdoc (4.2.0)
       json (~> 1.4)
+    rspec-core (2.13.1)
     rspec-expectations (3.2.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.2.0)
+    rspec-mocks (2.13.1)
     rspec-support (3.2.1)
 
 PLATFORMS
@@ -46,3 +48,6 @@ DEPENDENCIES
   deploysuite!
   rake (= 10.4.2)
   rdoc (= 4.2.0)
+  rspec-core (= 2.13.1)
+  rspec-mocks (= 2.13.1)
+  rspec-support (= 3.2.1)

@@ -20,5 +20,15 @@ module Deploysuite
 			cmd = "bundle exec rake db:schema:to_sql RAILS_ENV=production"
 			process_cmd(cmd)
 		end
+
+		def rspec_tests
+			cmd = "bundle exec rspec spec"
+			process_cmd(cmd, 'stdout')
+		end
+
+		def cucumber_tests
+			cmd = "bundle exec cucumber"
+			process_cmd(cmd, 'stdout')
+		end
 	end
 end

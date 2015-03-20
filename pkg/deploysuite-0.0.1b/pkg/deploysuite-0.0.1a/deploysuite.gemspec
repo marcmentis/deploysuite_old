@@ -19,9 +19,9 @@ spec = Gem::Specification.new do |s|
   s.add_development_dependency('rake', '10.4.2')
   s.add_development_dependency('rdoc', '4.2.0')
   s.add_development_dependency('aruba', '0.6.2')
-  # s.add_development_dependency('rspec-mocs')
-  # s.add_development_dependency('rspec-support', '3.2.1')
-  # s.add_development_dependency('rspec-core', '2.13.1')
+  s.add_development_dependency('rspec-mocks', '2.13.1')
+  s.add_development_dependency('rspec-support', '3.2.1')
+  s.add_development_dependency('rspec-core', '2.13.1')
   s.add_runtime_dependency('gli','2.12.2')
   s.add_runtime_dependency('rainbow')
 

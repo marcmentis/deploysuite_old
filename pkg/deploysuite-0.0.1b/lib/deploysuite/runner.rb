@@ -135,6 +135,16 @@ module Deploysuite
 			STDOUT.puts Rainbow("Success: Application restarted").green
 		end
 
+		def run_rspec_tests
+			r.rspec_tests
+			STDOUT.puts Rainbow("Success: Rspec tests run").green
+		end
+
+		def run_cucumber_tests
+			r.cucumber_tests
+			STDOUT.puts Rainbow("Success: Cucumber tests run").green
+		end
+
 		
 			
 	end

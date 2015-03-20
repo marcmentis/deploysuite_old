@@ -9,10 +9,23 @@ Feature: deployer clones new app - part 2
 	The 'clone_new_app' command will perform the following functions:
 		1. Run the 'bundle' command for the production environment
 		2. Precompile Assets for the app
-		3. Setup database (optional):
+		3. Load database schema (optional)
+		FOR UPDATE NOT NEW_CLONE Setup database (optional):
 			Command flag controls if db setup should occur, and if so whether database should be created or just SQL code generated 
 			(i) For Dev - run rake 'db:shcema:load' command
 			(ii) For QA and Prod - Generate the SQL code for DB creation
 		4. Make first commit to local git repo on server
 		5. Start Application
-		6. Run Behavioral and unit test
+		6. Run Rspec unit test
+		7. Run Cucumber behavioral tests
+
+
+	Scenario: 'clone_new_app2' command functions for prod env 
+		Given deploysuite started in app root directory
+		Then send bundle command
+		Then send precompile assets command
+		Then send loads db schema command
+		Then send make first commit command
+		Then send start application command
+		Then send rspec test command
+		Then send cucumber test command
