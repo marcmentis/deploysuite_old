@@ -16,7 +16,7 @@ module Deploysuite
 			final_path = "#{host_path}/config/enc_application.yml"
 			u.move_secret_file(file, host_path)
 
-			STDOUT.puts Rainbow("Success: #{file} moved to #{final_path}").green
+			$stdout.puts Rainbow("Success: #{file} moved to #{final_path}").green
 		end
 
 		def run_set_app_privileges_ownership(host_path)
@@ -25,14 +25,14 @@ module Deploysuite
 			u.set_app_permissions(host_path)
 			app_name = v.get_app_name(host_path)
 
-			STDOUT.puts Rainbow("Success: Group ownership and privileges set for #{app_name}").green
+			$stdout.puts Rainbow("Success: Group ownership and privileges set for #{app_name}").green
 		end
 
 		# VALIDATIONS
 		# Check that app directory does not exist
 		def run_app_not_exist?(host_path)
 			if v.app_not_exist?(host_path)
-				STDOUT.puts Rainbow("Success: No pre-existig app at '#{host_path}'").green
+				$stdout.puts Rainbow("Success: No pre-existig app at '#{host_path}'").green
 			else
 				exit 1
 			end
@@ -42,7 +42,7 @@ module Deploysuite
 		def run_in_final_deployer_group?(host_path)
 			path_to_host = v.get_path_to_host(host_path)
 			if v.in_final_deployer_group?(ev.user, ev.user_groups, host_path)
-				STDOUT.puts Rainbow("Success: '#{ev.user}' is member of '#{path_to_host}' group").green
+				$stdout.puts Rainbow("Success: '#{ev.user}' is member of '#{path_to_host}' group").green
 			else
 				
 			end
@@ -51,7 +51,7 @@ module Deploysuite
 		# Check that user is member of 'deployers' group
 		def run_valid_user?
 			if v.valid_user?(ev.user, ev.user_groups, "railsdep")
-				STDOUT.puts Rainbow("Success: '#{ev.user}' is member of 'railsdep' group").green
+				$stdout.puts Rainbow("Success: '#{ev.user}' is member of 'railsdep' group").green
 			else
 				exit 1
 			end
@@ -61,7 +61,7 @@ module Deploysuite
 		def run_path_to_host_legal?(host_path)
 			if v.path_to_host_legal?(host_path)
 				path_to_host = v.get_path_to_host(host_path)
-				STDOUT.puts Rainbow("Success: '#{path_to_host}' is legal path for app").green
+				$stdout.puts Rainbow("Success: '#{path_to_host}' is legal path for app").green
 			else
 				exit 1
 			end
@@ -70,7 +70,7 @@ module Deploysuite
 		# Check that Repo exists and user has privileges
 		def run_repo_exists?(repo)
 			if v.repo_exists?(repo)
-				STDOUT.puts Rainbow("Success: '#{repo}' exists and '#{ev.user}' has privileges").green
+				$stdout.puts Rainbow("Success: '#{repo}' exists and '#{ev.user}' has privileges").green
 			else
 				exit 1
 			end
@@ -79,7 +79,7 @@ module Deploysuite
 		# Check that secret_config1 file exists
 		def run_secret_config1?(host_path)
 			if v.secret_config1?(host_path)
-				STDOUT.puts Rainbow("Success: secret_config1 exists").green
+				$stdout.puts Rainbow("Success: secret_config1 exists").green
 			else
 				exit 1
 			end
@@ -88,22 +88,22 @@ module Deploysuite
 		def run_clone_branch(repo, host_path)
 		    git_branch = v.get_git_branch(ev.machine_name)
 		    g.clone_branch(git_branch, repo, host_path)
-		    STDOUT.puts Rainbow("Success: '#{repo}' cloned into '#{host_path}'").green
+		    $stdout.puts Rainbow("Success: '#{repo}' cloned into '#{host_path}'").green
 		end
 
 		def run_check_pwd(host_path)
 			u.check_pwd(host_path)
-			STDOUT.puts Rainbow("Success: 'deploysuite' run from root dir of app: '#{host_path}'").green
+			$stdout.puts Rainbow("Success: 'deploysuite' run from root dir of app: '#{host_path}'").green
 		end
 
 		def run_bundle
 			r.bundle
-			STDOUT.puts Rainbow("Success: Production env 'bundle' command run for app").green
+			$stdout.puts Rainbow("Success: Production env 'bundle' command run for app").green
 		end
 
 		def run_precompile_assets
 			r.precompile_assets
-			STDOUT.puts Rainbow("Success: Production env assets precompiled for app").green
+			$stdout.puts Rainbow("Success: Production env assets precompiled for app").green
 		end
 
 		def run_prepare_db
@@ -117,32 +117,32 @@ module Deploysuite
 
 		def run_load_schema
 			r.load_schema
-			STDOUT.puts Rainbow("Success: Schema loaded").green
+			$stdout.puts Rainbow("Success: Schema loaded").green
 		end
 
 		def run_generate_sql_script
 			r.generate_sql_script 
-			STDOUT.puts Rainbow("Success: SQL script for DB migrations generated").green
+			$stdout.puts Rainbow("Success: SQL script for DB migrations generated").green
 		end
 
 		def run_first_commit
 			g.first_commit
-			STDOUT.puts Rainbow("Success: First Commit performed for app").green
+			$stdout.puts Rainbow("Success: First Commit performed for app").green
 		end
 
 		def run_start_application
 			u.start_application
-			STDOUT.puts Rainbow("Success: Application restarted").green
+			$stdout.puts Rainbow("Success: Application restarted").green
 		end
 
 		def run_rspec_tests
 			r.rspec_tests
-			STDOUT.puts Rainbow("Success: Rspec tests run").green
+			$stdout.puts Rainbow("Success: Rspec tests run").green
 		end
 
 		def run_cucumber_tests
 			r.cucumber_tests
-			STDOUT.puts Rainbow("Success: Cucumber tests run").green
+			$stdout.puts Rainbow("Success: Cucumber tests run").green
 		end
 
 		

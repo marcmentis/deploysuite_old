@@ -2,16 +2,8 @@ require 'spec_helper'
 
 module Deploysuite
 	describe Validator do
-		# it "User belongs to given group, expect true" do
-		# 	v = Validator.new
-		# 	user = 'marcmentis'
-		# 	user_group = "staff _developer some_other_group deployer"
-		# 	required_group = 'deployer'
-
-		# 	result = v.valid_user?(user, user_group, required_group)
-		# 	expect(result).to eq true
-		# end
-		it "Deployer belongs to final_deployer_group, expect true" do
+	context "Check that:" do
+		it "deployer belongs to final_deployer_group" do
 			v = Validator.new
 			user = 'testuser'
 			user_group = "railsdep omhdep omh_pilg_dep oasasdep"
@@ -20,13 +12,13 @@ module Deploysuite
 			result = v.in_final_deployer_group?(user, user_group, host_path)
 			expect(result).to eq true
 		end
-		it "Path to host legal, expect true" do
+		it "path to host legal" do
 			v = Validator.new
 			host_path = "/rails/omh/app1"
 			result = v.path_to_host_legal?(host_path)
 			expect(result).to eq true
 		end
-		it "Clone requres app not exist, expect true" do
+		it "clone command requires that app not exist" do
 			if Dir.exists?("/tmp/xyz")
 				`rm -Rf /tmp/xyz`
 			end
@@ -35,14 +27,14 @@ module Deploysuite
 			result = v.app_not_exist?(host_path)
 			expect(result).to eq true
 		end
-		it "Repo exists and user has rights, expect true" do
+		it "repo exists and user has rights" do
 			pending("stub the command to github")
 			# v = Validator.new
 			# repo = "?"
 			# result = v.repo_exists?(repo)
 			# expect(result).to eq false
 		end
-		it "Secret Config file exists, expect true" do
+		it "secret Config file exists" do
 			`touch /rails/testapp_enc_application.yml`
 			v = Validator.new
 			host_path = "/rails/testapp"
@@ -50,13 +42,13 @@ module Deploysuite
 			`rm /rails/testapp_enc_application.yml`
 			expect(result).to eq true
 		end
-		it "gets final_deployer_group, expect omhdep" do
+		it "can determine final_deployer_group" do
 			v = Validator.new
 			host_path = "/rails/omh/testapp"
 			result = v.get_final_deployer_group(host_path)
 			expect(result).to eq "omhdep"
 		end
 
-		
+	end
 	end
 end

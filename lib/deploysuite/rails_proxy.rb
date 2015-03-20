@@ -22,11 +22,12 @@ module Deploysuite
 		end
 
 		def rspec_tests
-			cmd = "bundle exec rspec spec"
+			cmd = "bundle exec rspec spec --format documentation"
 			process_cmd(cmd, 'stdout')
 		end
 
 		def cucumber_tests
+			# cmd = bundle exec rake features - PUT GLI CODE INTO APP
 			cmd = "bundle exec cucumber"
 			process_cmd(cmd, 'stdout')
 		end
