@@ -22,7 +22,7 @@ module Deploysuite
 		end
 
 		def rspec_tests
-			cmd = "bundle exec rspec spec --format documentation"
+			cmd = "bundle exec rspec spec --color --format documentation"
 			process_cmd(cmd, 'stdout')
 		end
 

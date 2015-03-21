@@ -1,7 +1,6 @@
 require "spec_helper"
 
 module Deploysuite
-	describe Runner do
-		
+	describe RailsProxy do
 	end
 end
