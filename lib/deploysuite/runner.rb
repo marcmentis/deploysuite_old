@@ -145,6 +145,22 @@ module Deploysuite
 			$stdout.puts Rainbow("Success: Cucumber tests run").green
 		end
 
+		def run_clobber_assets
+			r.clobber_assets
+			$stdout.puts Rainbow("Success: Assets clobbered").green
+		end
+
+		def run_stash_local_changes
+			g.stash_local_changes
+			$stdout.puts Rainbow("Success: Local changes stashed").green
+		end
+
+		def run_fetch_branch_from_origin
+			git_branch = v.get_git_branch(ev.machine_name)
+			g.fetch_branch_from_origin(git_branch)
+			$stdout.puts Rainbow("Success: #{git_branch} fetched from origin").green
+		end
+
 		
 			
 	end

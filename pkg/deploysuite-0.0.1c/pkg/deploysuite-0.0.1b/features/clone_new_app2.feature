@@ -1,10 +1,10 @@
 Feature: deployer clones new app - part 2
 
-	To automate finishing the setup of a newly cloned repo branch, a deployer will 'CD' INTO THE ROOT DIRECTORY of the newly cloned branch and run deploysuites' 'clone_new_app2' command. The deployer must belong to the 'final_deploy_group' on the server. Appropriate 'bundler', 'rails', 'rake', 'git', and 'bash' commands will be used to install gems (bundler), precompile assets, setup database [optional], commit the local git repo, start the host application, and run app tests.
+	To automate finishing the setup of a newly cloned repo branch, a deployer will 'CD' INTO THE ROOT DIRECTORY of the newly cloned branch and run deploysuites' 'clone_new_app2' command. The deployer must belong to the 'final_deploy_group' on the server. Appropriate 'bundler', 'rails', 'rake', 'git', and 'bash' commands will be used to perform all steps necessary to complete the new clone, create db tables/SQL script [optional], and app tests [optional]. 
 
-	The 'clone_new_app2' command takes the 'host_path' to the new app as a global flag.
+	The 'clone_new_app2' command has one required global flag [--host_path], and three optional local switches [--db], [--rspec], [--cucumber]
 
-	Usage example: $ deploysuite --host_path=/path/to/host clone_new_app2
+	Usage example: $ deploysuite --host_path=/path/to/host clone_new_app2 [--db] [--rspec] [--cucumber]
 
 	The 'clone_new_app' command will perform the following functions:
 		1. Run the 'bundle' command for the production environment
@@ -20,7 +20,7 @@ Feature: deployer clones new app - part 2
 		7. Run Cucumber behavioral tests
 
 
-	Scenario: 'clone_new_app2' command functions for prod env 
+	Scenario: 'clone_new_app2' command functions
 		Given deploysuite started in app root directory
 		Then send bundle command
 		Then send precompile assets command

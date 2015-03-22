@@ -42,6 +42,11 @@ module Deploysuite
 				@RailsProxy.stub(:cucumber_tests)
 				@r.run_cucumber_tests
 			end
+
+			it "clobbers assets" do
+				@RailsProxy.stub(:clobber_assets)
+				@r.run_clobber_assets
+			end
 		end
 
 		context "Message from Runner to GitProxy to:" do

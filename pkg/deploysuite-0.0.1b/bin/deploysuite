@@ -88,6 +88,17 @@ command :clone_new_app2 do |c|
   end
 end
 
+desc 'Update code and db [optional] for existing app'
+# arg_name 'Describe arguments to update here'
+command :update_app do |c|
+  c.action do |global_options,options|
+    r = Runner.new(rails_proxy: RailsProxy.new, validator: Validator.new, utils_proxy: UtilsProxy.new, env_values: EnvValues.new, git_proxy: GitProxy.new)
+    r.run_check_pwd(global_options[:host_path])
+    r.run_clobber_assets
+    r.run_stash_local_changes
+  end
+end
+
 desc 'Run RSpec tests on app'
 command :rspec do |c|
   c.action do |global_options|
@@ -134,14 +145,6 @@ command :bundle do |c|
     r.run_bundle(global_options[:host_path])
   end
   
-end
-
-desc 'Describe update here'
-arg_name 'Describe arguments to update here'
-command :update do |c|
-  c.action do |global_options,options,args|
-    puts "update command ran"
-  end
 end
 
 pre do |global,command,options,args|

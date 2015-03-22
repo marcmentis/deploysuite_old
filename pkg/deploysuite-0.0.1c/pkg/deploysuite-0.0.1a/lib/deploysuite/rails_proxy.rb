@@ -35,7 +35,11 @@ module Deploysuite
 		def cucumber_tests
 			# cmd = bundle exec rake features - PUT GLI CODE INTO APP
 			cmd = "bundle exec cucumber"
-			# process_cmd(cmd, 'stdout')
+			open3method(cmd, 'out')
+		end
+
+		def clobber_assets
+			cmd = "bundle exec rake assets:clobber RAILS_ENV=production"
 			open3method(cmd, 'out')
 		end
 	end

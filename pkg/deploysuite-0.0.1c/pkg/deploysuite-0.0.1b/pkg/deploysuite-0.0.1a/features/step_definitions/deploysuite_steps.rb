@@ -44,7 +44,6 @@ end
 Then(/^send bundle command$/) do
 	r = double()
 	r.stub(:bundle)
-	r.stub(:process_cmd)
 
 	runner = Runner.new(rails_proxy: r)
 	runner.run_bundle()
@@ -53,7 +52,6 @@ end
 Then(/^send precompile assets command$/) do
 	r = double()
 	r.stub(:precompile_assets)
-	r.stub(:process_cmd)
 
 	runner = Runner.new(rails_proxy: r)
 	runner.run_precompile_assets()
@@ -62,7 +60,6 @@ end
 Then(/^send loads db schema command$/) do
 	r = double()
 	r.stub(:load_schema)
-	r.stub(:process_cmd)
 
 	runner = Runner.new(rails_proxy: r)
 	runner.run_load_schema()
@@ -72,7 +69,6 @@ end
 Then(/^send make first commit command$/) do
 	g = double()
 	g.stub(:first_commit)
-	g.stub(:process_cmd)
 
 	r = Runner.new(validator: Validator.new, env_values: EnvValues.new, git_proxy: g)
 	r.run_first_commit()
@@ -81,7 +77,6 @@ end
 Then(/^send start application command$/) do
 	u = double()
 	u.stub(:start_application)
-	u.stub(:process_cmd)
 
 	runner = Runner.new(utils_proxy: u)
 	runner.run_start_application()
@@ -90,7 +85,6 @@ end
 Then(/^send rspec test command$/) do
 	r = double()
 	r.stub(:rspec_tests)
-	r.stub(:process_cmd)
 
 	runner = Runner.new(rails_proxy: r)
 	runner.run_rspec_tests
@@ -99,8 +93,33 @@ end
 Then(/^send cucumber test command$/) do
 	r = double()
 	r.stub(:cucumber_tests)
-	r.stub(:cucumber_cmd)
 
 	runner = Runner.new(rails_proxy: r)
 	runner.run_cucumber_tests
+end
+
+Then(/^send clobber assets command$/) do
+	r = double()
+	r.stub(:clobber_assets)
+
+	runner = Runner.new(rails_proxy: r)
+	runner.run_clobber_assets
+end
+
+Then(/^send message to stash local changes$/) do
+  g = double()
+  g.stub(:stash_local_changes)
+  runner = Runner.new(git_proxy: g)
+  runner.run_stash_local_changes
+end
+
+Then(/^send message to fetch appropriate branch from origin$/) do
+  g = double()
+  g.stub(:fetch_branch_from_origin)
+  v = double()
+  v.stub(:get_get_branch)
+  # ev = double()
+  # ev.stub(:machine_name)
+  runner = Runner.new(git_proxy: g, env_values: EnvValues.new, validator: Validator.new)
+  runner.run_fetch_branch_from_origin
 end

@@ -18,5 +18,15 @@ module Deploysuite
 			# process_cmd(cmd)
 			open3method(cmd, 'out')				
 		end
+
+		def stash_local_changes
+			cmd = "git stash"
+			open3method(cmd, 'out')		
+		end
+
+		def fetch_branch_from_origin(git_branch)
+			cmd = "git fetch -v origin #{git_branch}:refs/remotes/origin/#{git_branch}"
+			open3method(cmd, 'out')		
+		end
 	end
 end
