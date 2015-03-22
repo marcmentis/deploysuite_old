@@ -5,6 +5,8 @@ require 'rainbow'
 
 require 'deploysuite/proxy.rb'
 
+require 'deploysuite/commandline_executer'
+
 require 'deploysuite/version.rb'
 require 'deploysuite/runner.rb'
 require 'deploysuite/env_values.rb'

@@ -20,6 +20,7 @@ require 'deploysuite'
 include GLI::App
 include Deploysuite
 
+
 program_desc 'Command Suite to facilitate git deployment to DEV, QA and PROD servers'
 
 version Deploysuite::VERSION

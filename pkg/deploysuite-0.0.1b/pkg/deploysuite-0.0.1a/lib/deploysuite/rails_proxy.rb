@@ -1,35 +1,42 @@
 module Deploysuite
-	class RailsProxy < Proxy
+	class RailsProxy
+		include CommandlineExecuter
 
 		def bundle
 			cmd = "bundle --without development test"
-			process_cmd(cmd,'stdout')	
+			# process_cmd(cmd,'stdout')
+			open3method(cmd, 'out')
 		end
 
 		def precompile_assets
 			cmd = "RAILS_ENV=production bundle exec rake assets:precompile"
-			process_cmd(cmd,'stdout')	
+			# process_cmd(cmd,'stdout')
+			open3method(cmd, 'out')	
 		end
 
 		def load_schema
 			cmd = "bundle exec rake db:schema:load RAILS_ENV=production"
-			process_cmd(cmd)
+			# process_cmd(cmd)
+			open3method(cmd)
 		end
 
 		def generate_sql_script
 			cmd = "bundle exec rake db:schema:to_sql RAILS_ENV=production"
-			process_cmd(cmd)
+			# process_cmd(cmd)
+			open3method(cmd)
 		end
 
 		def rspec_tests
 			cmd = "bundle exec rspec spec --color --format documentation"
-			process_cmd(cmd, 'stdout')
+			# process_cmd(cmd, 'stdout')
+			open3method(cmd, 'out')
 		end
 
 		def cucumber_tests
 			# cmd = bundle exec rake features - PUT GLI CODE INTO APP
 			cmd = "bundle exec cucumber"
-			process_cmd(cmd, 'stdout')
+			# process_cmd(cmd, 'stdout')
+			open3method(cmd, 'out')
 		end
 	end
 end
