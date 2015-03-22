@@ -89,13 +89,31 @@ command :clone_new_app2 do |c|
 end
 
 desc 'Update code and db [optional] for existing app'
-# arg_name 'Describe arguments to update here'
 command :update_app do |c|
-  c.action do |global_options,options|
+  c.desc 'Provide message to describe update'
+  c.flag [:m, :message]
+  c.desc 'Run RSpec tests'
+  c.switch [:rspec] # --no-rspec is false by default
+  c.desc 'Run Cucumber tests'
+  c.switch [:cucumber]# --no-cucumber is false by default
+  c.action do |global_options,options,args|
+    if options[:message] == nil
+      $stdout.puts "ERROR: Need message flag [-m, --message=arg]"
+      exit 1
+    end
     r = Runner.new(rails_proxy: RailsProxy.new, validator: Validator.new, utils_proxy: UtilsProxy.new, env_values: EnvValues.new, git_proxy: GitProxy.new)
     r.run_check_pwd(global_options[:host_path])
     r.run_clobber_assets
     r.run_stash_local_changes
+    r.run_fetch_branch_from_origin
+    r.run_merge_fetched_branch(options[:message])
+    r.run_bundle
+    r.run_precompile_assets
+    # put db here
+    r.run_start_application
+    # put privilege change here
+    r.run_rspec_tests if options[:rspec]
+    r.run_cucumber_tests if options[:cucumber]
   end
 end
 

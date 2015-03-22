@@ -158,7 +158,13 @@ module Deploysuite
 		def run_fetch_branch_from_origin
 			git_branch = v.get_git_branch(ev.machine_name)
 			g.fetch_branch_from_origin(git_branch)
-			$stdout.puts Rainbow("Success: #{git_branch} fetched from origin").green
+			$stdout.puts Rainbow("Success: fetch branch from origin").green
+		end
+
+		def run_merge_fetched_branch(message)
+			git_branch = v.get_git_branch(ev.machine_name)
+			g.merge_fetched_branch(git_branch, message)
+			$stdout.puts Rainbow("Success: merge fetched branch").green
 		end
 
 		

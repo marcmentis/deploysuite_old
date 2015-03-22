@@ -41,7 +41,7 @@ Given(/^deploysuite started in app root directory$/) do
   #Don't do anything
 end
 
-Then(/^send bundle command$/) do
+Then(/^send message to update gems \(bundle\)$/) do
 	r = double()
 	r.stub(:bundle)
 
@@ -49,7 +49,7 @@ Then(/^send bundle command$/) do
 	runner.run_bundle()
 end
 
-Then(/^send precompile assets command$/) do
+Then(/^send message to precompile assets$/) do
 	r = double()
 	r.stub(:precompile_assets)
 
@@ -57,7 +57,7 @@ Then(/^send precompile assets command$/) do
 	runner.run_precompile_assets()
 end
 
-Then(/^send loads db schema command$/) do
+Then(/^send message to loads db schema$/) do
 	r = double()
 	r.stub(:load_schema)
 
@@ -66,7 +66,7 @@ Then(/^send loads db schema command$/) do
 
 end
 
-Then(/^send make first commit command$/) do
+Then(/^send message to make first commit$/) do
 	g = double()
 	g.stub(:first_commit)
 
@@ -74,7 +74,7 @@ Then(/^send make first commit command$/) do
 	r.run_first_commit()
 end
 
-Then(/^send start application command$/) do
+Then(/^send message to start application$/) do
 	u = double()
 	u.stub(:start_application)
 
@@ -82,7 +82,7 @@ Then(/^send start application command$/) do
 	runner.run_start_application()
 end
 
-Then(/^send rspec test command$/) do
+Then(/^send message to run rspec tests$/) do
 	r = double()
 	r.stub(:rspec_tests)
 
@@ -90,7 +90,7 @@ Then(/^send rspec test command$/) do
 	runner.run_rspec_tests
 end
 
-Then(/^send cucumber test command$/) do
+Then(/^send message to run cucumber tests$/) do
 	r = double()
 	r.stub(:cucumber_tests)
 
@@ -98,7 +98,7 @@ Then(/^send cucumber test command$/) do
 	runner.run_cucumber_tests
 end
 
-Then(/^send clobber assets command$/) do
+Then(/^send message to clobber assets$/) do
 	r = double()
 	r.stub(:clobber_assets)
 
@@ -116,10 +116,13 @@ end
 Then(/^send message to fetch appropriate branch from origin$/) do
   g = double()
   g.stub(:fetch_branch_from_origin)
-  v = double()
-  v.stub(:get_get_branch)
-  # ev = double()
-  # ev.stub(:machine_name)
   runner = Runner.new(git_proxy: g, env_values: EnvValues.new, validator: Validator.new)
   runner.run_fetch_branch_from_origin
+end
+
+Then(/^send message to merge fetched branch with appropriate local branch$/) do
+  g = double()
+  g.stub(:merge_fetched_branch)
+  runner = Runner.new(git_proxy: g, env_values: EnvValues.new, validator: Validator.new)
+  runner.run_merge_fetched_branch('message')
 end

@@ -28,5 +28,10 @@ module Deploysuite
 			cmd = "git fetch -v origin #{git_branch}:refs/remotes/origin/#{git_branch}"
 			open3method(cmd, 'out')		
 		end
+
+		def merge_fetched_branch(git_branch, message)
+			cmd = "git merge origin/#{git_branch} -m '#{message}' "
+			open3method(cmd, 'out')	
+		end
 	end
 end
