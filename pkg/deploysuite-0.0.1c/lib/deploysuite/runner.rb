@@ -3,17 +3,17 @@ module Deploysuite
 		attr_reader :v, :ev, :g, :u, :r
 
 		def initialize(args)
-			@v = Validator.new() 
-			@ev = EnvValues.new() 
-			@g = GitProxy.new() 
-			@u = UtilsProxy.new()
-			@r = RailsProxy.new()
+			# @v = Validator.new() 
+			# @ev = EnvValues.new() 
+			# @g = GitProxy.new() 
+			# @u = UtilsProxy.new()
+			# @r = RailsProxy.new()
 
-			# @v = args[:validator] 
-			# @ev = args[:env_values] 
-			# @g = args[:git_proxy] 
-			# @u = args[:utils_proxy]
-			# @r = args[:rails_proxy]
+			@v = args[:validator] 
+			@ev = args[:env_values] 
+			@g = args[:git_proxy] 
+			@u = args[:utils_proxy]
+			@r = args[:rails_proxy]
 
 		end
 
@@ -113,14 +113,14 @@ module Deploysuite
 			$stdout.puts Rainbow("Success: Production env assets precompiled for app").green
 		end
 
-		def run_prepare_db
-			git_branch = v.get_git_branch(ev.machine_name)
-			if git_branch == 'dev'
-				run_load_schema
-			else
-				run_generate_sql_script
-			end
-		end
+		# def run_prepare_db
+		# 	git_branch = v.get_git_branch(ev.machine_name)
+		# 	if git_branch == 'dev'
+		# 		run_load_schema
+		# 	else
+		# 		run_generate_sql_script
+		# 	end
+		# end
 
 		def run_load_schema
 			r.load_schema
@@ -130,6 +130,11 @@ module Deploysuite
 		def run_generate_sql_script
 			r.generate_sql_script 
 			$stdout.puts Rainbow("Success: SQL script for DB migrations generated").green
+		end
+
+		def run_migrate_db
+			r.migrate_db
+			$stdout.puts Rainbow("Success: Database migrated").green
 		end
 
 		def run_first_commit

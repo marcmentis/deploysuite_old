@@ -46,7 +46,7 @@ command :clone_new_app do |c|
   c.default_value 'git@github.com:account/repo'
   c.flag [:repo, :r]
   c.action do |global_options,options,args|
-    s = RepoBranchSwitcher.new
+    s = RepoBranchSwitcher.new()
     switch_info = {command: "clone_new_app1", args: {host_path: global_options[:host_path], repo: options[:repo]} }
     s.send(switch_info)
     
@@ -77,16 +77,9 @@ command :clone_new_app2 do |c|
   c.desc 'Run Cucumber tests'
   c.switch [:cucumber]# --no-cucumber is false by default
   c.action do |global_options,options|
-    r = Runner.new(rails_proxy: RailsProxy.new, validator: Validator.new, utils_proxy: UtilsProxy.new, env_values:EnvValues.new, git_proxy: GitProxy.new)
-    r.run_check_pwd(global_options[:host_path])
-    r.run_bundle
-    r.run_precompile_assets
-    r.run_prepare_db if options[:db]
-    r.run_first_commit
-    r.run_start_application
-    r.run_set_app_privileges_ownership(global_options[:host_path])
-    r.run_rspec_tests if options[:rspec]
-    r.run_cucumber_tests if options[:cucumber]
+    s = RepoBranchSwitcher.new()
+    switch_info = {command: "clone_new_app2", args: {host_path: global_options[:host_path], db: options[:db], rspec: options[:rspec], cucumber: options[:cucumber]} }
+    s.send(switch_info)
 
     STDOUT.puts Rainbow("Success: 'clone_new_app2' command completed").bright.green
     DeployLog.stdout_log.info {"Success: 'clone_new_app2' command completed"}
@@ -107,53 +100,49 @@ command :update_app do |c|
       exit 1
     end
 
-    r = Runner.new(rails_proxy: RailsProxy.new, validator: Validator.new, utils_proxy: UtilsProxy.new, env_values: EnvValues.new, git_proxy: GitProxy.new)
-    r.run_check_pwd(global_options[:host_path])
-    r.run_clobber_assets
-    r.run_stash_local_changes
-    r.run_fetch_branch_from_origin
-    r.run_merge_fetched_branch(options[:message])
-    r.run_bundle
-    r.run_precompile_assets
-    # put db here
-    r.run_start_application
-    # put privilege change here
-    r.run_rspec_tests if options[:rspec]
-    r.run_cucumber_tests if options[:cucumber]
+    s = RepoBranchSwitcher.new()
+    switch_info = {command: "update_app", args: {host_path: global_options[:host_path], message: options[:message], rspec: options[:rspec], cucumber: options[:cucumber]} }
+    s.send(switch_info)
+
+    STDOUT.puts Rainbow("Success: 'update app' command completed").bright.green
+    DeployLog.stdout_log.info {"Success: 'update app' command completed"}
+    
   end
 end
 
 desc 'Run RSpec tests on app'
 command :rspec do |c|
   c.action do |global_options|
-    r = Runner.new(rails_proxy: RailsProxy.new, utils_proxy: UtilsProxy.new)
-    r.run_check_pwd(global_options[:host_path])
-    r.run_rspec_tests
+    s = RepoBranchSwitcher.new()
+    switch_info = {command: "rspec", args: {host_path: global_options[:host_path]} }
+    s.send(switch_info)
+
   end
 end
 
 desc 'Run Cucumber tests on app'
 command :cucumber do |c|
   c.action do |global_options|
-    r = Runner.new(rails_proxy: RailsProxy.new, utils_proxy: UtilsProxy.new)
-    r.run_check_pwd(global_options[:host_path])
-    r.run_cucumber_tests
+    s = RepoBranchSwitcher.new()
+    switch_info = {command: "cucumber", args: {host_path: global_options[:host_path]} }
+    s.send(switch_info)
+    
   end
 end
 
 desc 'Clone appropriate repo branch into valid server path'
 arg_name 'Describe arguments to clone here'
 command :clone_branch do |c|
-  c.desc 'Describe a switch to clone_branch'
-  c.switch :s
-
   c.desc 'URL to repo'
   c.default_value 'git@github.com:account/repo'
   c.flag [:repo, :r]
   c.action do |global_options,options,args|
+    s = RepoBranchSwitcher.new()
+    switch_info = {command: "clone_branch", args: {host_path: global_options[:host_path], repo: options[:repo]} }
+    s.send(switch_info)
 
-    r = Runner.new(validator: Validator.new, env_values: EnvValues.new, git_proxy: GitProxy.new)
-    r.run_clone_branch(options[:repo], global_options[:host_path])
+    
+    
 
     # STDOUT.puts "Success: 'Clone_branch' command completed"
     # DeployLog.stdout_log.info {"Success: 'Clone_branch' command completed"}
@@ -165,8 +154,9 @@ end
 desc 'Run bundle command for application production environment only'
 command :bundle do |c|
   c.action do |global_options|
-    r = Runner.new(rails_proxy: RailsProxy.new)
-    r.run_bundle(global_options[:host_path])
+    s = RepoBranchSwitcher.new()
+    switch_info = {command: "bundle", args: {host_path: global_options[:host_path]} }
+    s.send(switch_info)
   end
   
 end

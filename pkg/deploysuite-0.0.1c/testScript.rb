@@ -111,12 +111,31 @@ require 'rainbow'
 		    puts "status.exitstatus: #{r[:exit]}"	
 		end
 
+		def migrate_db
+			cmd = "bundle exec rake db:migrate RAILS_ENV=production"
+			r= open3method(cmd)	
+			puts "stdout_str: #{r[:stdout]}"
+		    puts "stderr_str: #{r[:stderr]}"
+		    puts "status: #{r[:status]}"
+		    puts "status.exitstatus: #{r[:exit]}"	
+		end
+
+		def generate_sql_script
+			cmd = "bundle exec rake db:schema:to_sql RAILS_ENV=production"
+			r= open3method(cmd)	
+			puts "stdout_str: #{r[:stdout]}"
+		    puts "stderr_str: #{r[:stderr]}"
+		    puts "status: #{r[:status]}"
+		    puts "status.exitstatus: #{r[:exit]}"
+		end
+
 # rspec_tests
 # fail_with_invalid_command
 # clobber_assets
 # stash_local_changes
 # fetch_branch_from_origin('dev')
 # merge_fetched_branch('dev', 'message from test')
-
+# migrate_db
+# generate_sql_script
 
 
