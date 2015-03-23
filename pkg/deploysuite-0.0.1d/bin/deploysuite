@@ -28,8 +28,8 @@ version Deploysuite::VERSION
 subcommand_option_handling :normal
 arguments :strict
 
-desc 'Describe some switch here'
-switch [:s,:switch]
+# desc 'Describe some switch here'
+# switch [:s,:switch]
 
 desc 'Absolute Path to App: /path/to/app (future or existing app)'
 # default_value 'the default'

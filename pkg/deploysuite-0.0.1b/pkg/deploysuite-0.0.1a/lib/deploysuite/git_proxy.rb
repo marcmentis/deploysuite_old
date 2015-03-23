@@ -12,11 +12,11 @@ module Deploysuite
 		def first_commit
 			cmd = "git add ."
 			# process_cmd(cmd)
-			open3method(cmd, 'out')
+			open3method(cmd)
 
 			cmd = "git commit -m 'First Commit'"
 			# process_cmd(cmd)
-			open3method(cmd, 'out')				
+			open3method(cmd)				
 		end
 
 		def stash_local_changes
