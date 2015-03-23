@@ -46,20 +46,10 @@ command :clone_new_app do |c|
   c.default_value 'git@github.com:account/repo'
   c.flag [:repo, :r]
   c.action do |global_options,options,args|
-    r = Runner.new(validator: Validator.new, env_values: EnvValues.new, git_proxy: GitProxy.new, utils_proxy: UtilsProxy.new)
-    v = Validator.new()
-    ev = EnvValues.new()
-    git_branch = v.get_git_branch(ev.machine_name)
-    args = {name: "clone_new_app1", host_path: global_options[:host_path], repo: options[:repo] }
-
-    case git_branch
-    when "dev"
-      dev = DevDeployer.new()
-      dev.clone_new_app1(args)
-    else
-      STDERR.puts Rainbow("ERROR: This machine '#{ev.machine_name}' does NOT have permission to run this app.").red
-      exit 1
-    end
+    s = RepoBranchSwitcher.new
+    switch_info = {command: "clone_new_app1", args: {host_path: global_options[:host_path], repo: options[:repo]} }
+    s.send(switch_info)
+    
 
 
     # PROCEDURAL METHOD

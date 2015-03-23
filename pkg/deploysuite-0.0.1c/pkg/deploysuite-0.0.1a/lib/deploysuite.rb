@@ -8,6 +8,8 @@ require 'rainbow'
 require 'deploysuite/commandline_executer'
 require 'deploysuite/common_deployer'
 
+require 'deploysuite/repo_branch_switcher'
+
 require 'deploysuite/version.rb'
 require 'deploysuite/runner.rb'
 require 'deploysuite/env_values.rb'
