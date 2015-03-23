@@ -18,19 +18,18 @@ module Deploysuite
 			command = switch_info[:command]
 			
 
-			case @git_branch
+			case git_branch
 			    when "dev"
-			    	puts "In dev"
-					dev = DevDeployer.new()
-					whole_message = "dev.#{command}(args)"
+			    	dev = DevDeployer.new()
+					whole_message = "dev.#{command}(#{args})"
 					eval(whole_message)
-					# dev.wrong_function(args)
 			    when "qa"
-			    	qa = QaDeveloper.new()
-			    	whole = "qa.#{command}(args)"
+			    	qa = QaDeployer.new()
+			    	whole_message = "qa.#{command}(#{args})"
 					eval(whole_message)
 			    when "prod"
-			    	whole = "prod.#{command}(args)"
+			    	prod = ProdDeployer.new()
+			    	whole_message = "prod.#{command}(#{args})"
 					eval(whole_message)
 			    else
 			      STDERR.puts Rainbow("ERROR: This machine '#{ev.machine_name}' does NOT have permission to run this app.").red

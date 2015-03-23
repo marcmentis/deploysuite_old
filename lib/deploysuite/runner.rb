@@ -3,11 +3,18 @@ module Deploysuite
 		attr_reader :v, :ev, :g, :u, :r
 
 		def initialize(args)
-			@v = args[:validator] 
-			@ev = args[:env_values] 
-			@g = args[:git_proxy] 
-			@u = args[:utils_proxy]
-			@r = args[:rails_proxy]
+			@v = Validator.new() 
+			@ev = EnvValues.new() 
+			@g = GitProxy.new() 
+			@u = UtilsProxy.new()
+			@r = RailsProxy.new()
+
+			# @v = args[:validator] 
+			# @ev = args[:env_values] 
+			# @g = args[:git_proxy] 
+			# @u = args[:utils_proxy]
+			# @r = args[:rails_proxy]
+
 		end
 
 		def run_move_secret_file(host_path)

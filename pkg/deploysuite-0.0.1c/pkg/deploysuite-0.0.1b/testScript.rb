@@ -111,15 +111,12 @@ require 'rainbow'
 		    puts "status.exitstatus: #{r[:exit]}"	
 		end
 
-
-
-
 # rspec_tests
 # fail_with_invalid_command
 # clobber_assets
 # stash_local_changes
 # fetch_branch_from_origin('dev')
-merge_fetched_branch('dev', 'message from test')
+# merge_fetched_branch('dev', 'message from test')
 
 
 
