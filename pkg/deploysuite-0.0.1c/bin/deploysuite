@@ -47,15 +47,30 @@ command :clone_new_app do |c|
   c.flag [:repo, :r]
   c.action do |global_options,options,args|
     r = Runner.new(validator: Validator.new, env_values: EnvValues.new, git_proxy: GitProxy.new, utils_proxy: UtilsProxy.new)
-    # Validations
-    r.run_in_final_deployer_group?(global_options[:host_path])
-    r.run_path_to_host_legal?(global_options[:host_path])
-    r.run_app_not_exist?(global_options[:host_path])
-    r.run_repo_exists?(options[:repo])
-    r.run_secret_config1?(global_options[:host_path])
-    r.run_clone_branch(options[:repo], global_options[:host_path])
-    r.run_move_secret_file(global_options[:host_path])
-    r.run_set_app_privileges_ownership(global_options[:host_path])
+    v = Validator.new()
+    ev = EnvValues.new()
+    git_branch = v.get_git_branch(ev.machine_name)
+    args = {name: "clone_new_app1", host_path: global_options[:host_path], repo: options[:repo] }
+
+    case git_branch
+    when "dev"
+      dev = DevDeployer.new()
+      dev.clone_new_app1(args)
+    else
+      STDERR.puts Rainbow("ERROR: This machine '#{ev.machine_name}' does NOT have permission to run this app.").red
+      exit 1
+    end
+
+
+    # PROCEDURAL METHOD
+      # r.run_in_final_deployer_group?(global_options[:host_path])
+      # r.run_path_to_host_legal?(global_options[:host_path])
+      # r.run_app_not_exist?(global_options[:host_path])
+      # r.run_repo_exists?(options[:repo])
+      # r.run_secret_config1?(global_options[:host_path])
+      # r.run_clone_branch(options[:repo], global_options[:host_path])
+      # r.run_move_secret_file(global_options[:host_path])
+      # r.run_set_app_privileges_ownership(global_options[:host_path])
 
     STDOUT.puts Rainbow("Success: 'Clone_new_app' command completed without error").bright.green
     DeployLog.stdout_log.info {"Success: 'Clone_new_app' command completed without error"}
@@ -101,6 +116,7 @@ command :update_app do |c|
       $stdout.puts "ERROR: Need message flag [-m, --message=arg]"
       exit 1
     end
+
     r = Runner.new(rails_proxy: RailsProxy.new, validator: Validator.new, utils_proxy: UtilsProxy.new, env_values: EnvValues.new, git_proxy: GitProxy.new)
     r.run_check_pwd(global_options[:host_path])
     r.run_clobber_assets
