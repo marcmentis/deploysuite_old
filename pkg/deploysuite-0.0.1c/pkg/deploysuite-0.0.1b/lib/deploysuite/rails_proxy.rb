@@ -17,13 +17,19 @@ module Deploysuite
 		def load_schema
 			cmd = "bundle exec rake db:schema:load RAILS_ENV=production"
 			# process_cmd(cmd)
-			open3method(cmd)
+			open3method(cmd, 'out')
+		end
+
+		def migrate_db
+			cmd = "bundle exec rake db:migrate RAILS_ENV=production"
+			# process_cmd(cmd)
+			open3method(cmd, 'out')
 		end
 
 		def generate_sql_script
 			cmd = "bundle exec rake db:schema:to_sql RAILS_ENV=production"
 			# process_cmd(cmd)
-			open3method(cmd)
+			open3method(cmd, 'out')
 		end
 
 		def rspec_tests

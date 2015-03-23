@@ -52,12 +52,12 @@ module Deploysuite
 
 		def get_git_branch(machine_name)
 			case machine_name
-				when "omhrord1.omh.ny.gov", "marcs-mbp", "u14"
+				when "omhrord1.omh.ny.gov", "u14", "marcs-mbp"
 					@git_branch = 'dev'
-				when "omhrorq1.omh.ny.gov"
+				when "omhrorq1.omh.ny.gov,"
 					@git_branch = 'qa'
 				when "omhrorp1.omh.ny.gov"
-					@git_branch = 'prod'
+					@git_branch = 'master'
 				else
 					STDERR.puts Rainbow("ERROR: This machine '#{machine_name}' does NOT have permission to run this app.").red
 					exit 1
