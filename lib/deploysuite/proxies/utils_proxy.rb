@@ -2,9 +2,9 @@ module Deploysuite
 	class UtilsProxy
 		include CommandlineExecuter
 
-		def test_from_runner(args)
-			args == '/tmp/testapp' ? true : false
-		end
+		# def test_from_runner(args)
+		# 	args == '/tmp/testapp' ? true : false
+		# end
 
 		def check_pwd(host_path)
 			pwd = `pwd`.chomp

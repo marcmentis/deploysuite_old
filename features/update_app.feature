@@ -21,15 +21,14 @@ Feature: deployer updates existing app
 	
 	Scenario: 'update_app' command functions
 		Given deploysuite started in app root directory
-		Then message successfully sent to deployer
-		#Then send message to clobber assets
-		#Then send message to stash local changes 
-		#Then send message to fetch appropriate branch from origin
-		#Then send message to merge fetched branch with appropriate local branch
-		#Then send message to update gems (bundle)
-		#Then send message to precompile assets
+		Then send message to clobber assets
+		Then send message to stash local changes 
+		Then send message to fetch appropriate branch from origin
+		Then send message to merge fetched branch with appropriate local branch
+		Then send message to update gems (bundle)
+		Then send message to precompile assets
 
-		#Then send message to start application
+		Then send message to start application
 		
-		#Then send message to run rspec tests
-		#Then send message to run cucumber tests
+		Then send message to run rspec tests
+		Then send message to run cucumber tests

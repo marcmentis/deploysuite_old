@@ -2,8 +2,8 @@ module CommonDeployer
 	attr_reader :r
 
 	def initialize
-		# @r = Runner.new(rails_proxy: RailsProxy.new, validator: Validator.new, env_values: EnvValues.new, git_proxy: GitProxy.new, utils_proxy: UtilsProxy.new)
-		@r = Runner.new()
+		@r = Runner.new(rails_proxy: RailsProxy.new, validator: Validator.new, env_values: EnvValues.new, git_proxy: GitProxy.new, utils_proxy: UtilsProxy.new)
+		# @r = Runner.new()
 	end
 
 	def clone_new_app1(args={})

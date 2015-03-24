@@ -10,9 +10,9 @@ module Deploysuite
 			@machine_name = Socket.gethostname.downcase
 		end
 
-		def test_from_runner(args)
-			args == '/tmp/testapp' ? true : false
-		end
+		# def test_from_runner(args)
+		# 	args == '/tmp/testapp' ? true : false
+		# end
 			
 	end
 end
