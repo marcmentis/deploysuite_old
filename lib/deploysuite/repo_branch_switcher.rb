@@ -2,10 +2,10 @@ module Deploysuite
 	class RepoBranchSwitcher
 		attr_reader :v, :ev, :git_branch
 
-		def initialize
-			@v = Validator.new()
-			@ev = EnvValues.new() 
-		    @git_branch = get_git_branch
+		def initialize(args={})
+			@v = args[:validator]
+			@ev = args[:env_values]
+			@git_branch = get_git_branch
 		end
 		
 
@@ -21,17 +21,17 @@ module Deploysuite
 			case git_branch
 			    when "dev"
 			    	# puts "In dev"
-			    	dev = DevDeployer.new()
+			    	dev = DevDeployer.new({runner: Runner.new(rails_proxy: RailsProxy.new, validator: Validator.new, env_values: EnvValues.new, git_proxy: GitProxy.new, utils_proxy: UtilsProxy.new)})
 					whole_message = "dev.#{command}(#{args})"
 					eval(whole_message)
 			    when "qa"
 			    	# puts "In qa"
-			    	qa = QaDeployer.new()
+			    	qa = QaDeployer.new({runner: Runner.new(rails_proxy: RailsProxy.new, validator: Validator.new, env_values: EnvValues.new, git_proxy: GitProxy.new, utils_proxy: UtilsProxy.new)})
 			    	whole_message = "qa.#{command}(#{args})"
 					eval(whole_message)
 			    when "master"
 			    	# puts "In prod"
-			    	prod = ProdDeployer.new()
+			    	prod = ProdDeployer.new({runner: Runner.new(rails_proxy: RailsProxy.new, validator: Validator.new, env_values: EnvValues.new, git_proxy: GitProxy.new, utils_proxy: UtilsProxy.new)})
 			    	whole_message = "prod.#{command}(#{args})"
 					eval(whole_message)
 			    else
