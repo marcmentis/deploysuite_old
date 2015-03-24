@@ -5,7 +5,7 @@ require 'rainbow'
 
 # require 'deploysuite/proxy.rb'
 
-require 'deploysuite/commandline_executer'
+require 'deploysuite/proxies/commandline_executer'
 require 'deploysuite/branchdeployers/common_deployer'
 
 require 'deploysuite/repo_branch_switcher'

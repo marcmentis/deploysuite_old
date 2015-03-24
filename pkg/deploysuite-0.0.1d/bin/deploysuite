@@ -131,7 +131,7 @@ command :cucumber do |c|
 end
 
 desc 'Clone appropriate repo branch into valid server path'
-arg_name 'Describe arguments to clone here'
+# arg_name 'Describe arguments to clone here'
 command :clone_branch do |c|
   c.desc 'URL to repo'
   c.default_value 'git@github.com:account/repo'

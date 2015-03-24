@@ -61,7 +61,7 @@ module CommonDeployer
 		r.run_bundle
 	end
 
-	def clone(args={})
+	def clone_branch(args={})
 		r.run_clone_branch(args[:repo], args[:host_path])
 	end
 
