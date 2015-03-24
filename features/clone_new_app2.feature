@@ -29,3 +29,4 @@ Feature: deployer clones new app - part 2
 		Then send message to start application
 		Then send message to run rspec tests
 		Then send message to run cucumber tests
+		Then send message to create SQL schema structure

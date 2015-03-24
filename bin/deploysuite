@@ -119,6 +119,16 @@ command :cucumber do |c|
   end
 end
 
+desc 'Generate SQL for whole schema'
+command :schema_SQL do |c|
+  c.action do |global_options|
+    s = RepoBranchSwitcher.new({validator: Validator.new, env_values: EnvValues.new})
+    switch_info = {command: "db_structure_dump", args: {host_path: global_options[:host_path]} }
+    s.send(switch_info)
+  end
+  
+end
+
 desc 'Clone appropriate repo branch into valid server path'
 # arg_name 'Describe arguments to clone here'
 command :clone_branch do |c|

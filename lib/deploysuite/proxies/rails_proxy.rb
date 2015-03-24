@@ -27,6 +27,16 @@ module Deploysuite
 			open3method(cmd, 'out')
 		end
 
+		def db_structure_dump
+			cmd = "bundle exec rake db:structure:dump RAILS_ENV=production"
+			open3method(cmd)
+		end
+
+		def db_rollback_all_migrations
+			cmd = "bundle exec rake db:migrate VERSION=0 RAILS_ENV=production"
+			open3method(cmd)
+		end
+
 		def rspec_tests
 			cmd = "bundle exec rspec spec --color --format documentation"
 			open3method(cmd, 'out')

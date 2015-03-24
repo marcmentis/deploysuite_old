@@ -106,23 +106,24 @@ module Deploysuite
 			$stdout.puts Rainbow("Success: Production env assets precompiled for app").green
 		end
 
-		# def run_prepare_db
-		# 	git_branch = v.get_git_branch(ev.machine_name)
-		# 	if git_branch == 'dev'
-		# 		run_load_schema
-		# 	else
-		# 		run_generate_sql_script
-		# 	end
-		# end
-
 		def run_load_schema
 			r.load_schema
 			$stdout.puts Rainbow("Success: Schema loaded").green
 		end
 
+		def run_db_rollback_all_migrations
+			r.db_rollback_all_migrations
+			$stdout.puts Rainbow("Success: All migrations rolled back").green
+		end
+
 		def run_generate_sql_script
 			r.generate_sql_script 
 			$stdout.puts Rainbow("Success: SQL script for DB migrations generated").green
+		end
+
+		def run_db_structure_dump
+			r.db_structure_dump
+			$stdout.puts Rainbow("Success: SQL script for schema dump generated").green
 		end
 
 		def run_migrate_db

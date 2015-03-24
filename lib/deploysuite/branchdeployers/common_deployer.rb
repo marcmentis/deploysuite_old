@@ -20,7 +20,8 @@ module CommonDeployer
 		r.run_check_pwd(args[:host_path])
 	    r.run_bundle
 	    r.run_precompile_assets
-	    r.run_load_schema if args[:db]
+	    # HOOK for db functions
+	    	clone_app_db_functions()
 	    r.run_first_commit
 	    r.run_start_application
 	    r.run_set_app_privileges_ownership(args[:host_path])
@@ -65,7 +66,15 @@ module CommonDeployer
 		r.run_clone_branch(args[:repo], args[:host_path])
 	end
 
+	def db_structure_dump(args={})
+		r.run_check_pwd(args[:host_path])
+		r.run_db_structure_dump
+	end
+
 	def update_app_db_functions
+		# HOOK doesn't do anything from common_deployer
+	end
+	def clone_app_db_functions
 		# HOOK doesn't do anything from common_deployer
 	end
 end

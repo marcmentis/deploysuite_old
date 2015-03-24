@@ -2,37 +2,6 @@ require "spec_helper"
 
 module Deploysuite
 	describe Runner do
-		# NO DEPENDENCY INJECTION
-			# context "Message from Runner successfully sent to:" do
-			# 	before(:each) do
-			# 		r = Runner.new
-			# 		@ans = r.test_message
-			# 	end
-			# 	it "RailsProxy" do
-			# 		rails = @ans[:rails]
-			# 		expect(rails).to eq true
-			# 	end
-
-			# 	it "UtilsProxy" do
-			# 		utils = @ans[:utils]
-			# 		expect(utils).to eq true
-			# 	end
-
-			# 	it "GitProxy" do
-			# 		gprox = @ans[:gprox]
-			# 		expect(gprox).to eq true
-			# 	end
-
-			# 	it "EnvValues" do
-			# 		enval = @ans[:enval]
-			# 		expect(enval).to eq true
-			# 	end
-
-			# 	it "Validator" do
-			# 		validator = @ans[:validator]
-			# 		expect(validator).to eq true
-			# 	end
-		# end	
 
 		context "Message from Runner to RailsProxy to:" do
 			before(:each) do
@@ -43,8 +12,7 @@ module Deploysuite
 				
 			end
 			
-			it "perform bundle command in production env" do
-				
+			it "perform bundle command in production env" do				
 				@RailsProxy.stub(:bundle)
 				@r.run_bundle()
 			end
@@ -60,9 +28,14 @@ module Deploysuite
 				@r.run_load_schema()
 			end
 
-			it "generate SQL script" do
+			it "generate SQL script for migration" do
 				@RailsProxy.stub(:generate_sql_script)
 				@r.run_generate_sql_script()
+			end
+
+			it "generate SQL script for schema" do
+				@RailsProxy.stub(:db_structure_dump)
+				@r.run_db_structure_dump
 			end
 
 			it "run rspec tests" do
@@ -109,8 +82,6 @@ module Deploysuite
 				@UtilsProxy.stub(:start_application)
 				@r.run_start_application()
 			end
-
-
 		end		
 		
 	end
