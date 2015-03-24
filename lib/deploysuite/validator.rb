@@ -1,6 +1,10 @@
 module Deploysuite
 	class Validator
 
+		def test_from_runner(args)
+			args == '/tmp/testapp' ? true : false
+		end
+
 		def app_not_exist?(host_path)
 			host_path.downcase
 			if Dir.exists?(host_path)

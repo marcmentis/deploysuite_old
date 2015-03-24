@@ -2,19 +2,30 @@ module Deploysuite
 	class Runner
 		attr_reader :v, :ev, :g, :u, :r
 
-		def initialize(args)
-			# @v = Validator.new() 
-			# @ev = EnvValues.new() 
-			# @g = GitProxy.new() 
-			# @u = UtilsProxy.new()
-			# @r = RailsProxy.new()
+		
+		def initialize
+			@v = Validator.new() 
+			@ev = EnvValues.new() 
+			@g = GitProxy.new() 
+			@u = UtilsProxy.new()
+			@r = RailsProxy.new()
+		end
+		# def initialize(args)
+			# @v = args[:validator] 
+			# @ev = args[:env_values] 
+			# @g = args[:git_proxy] 
+			# @u = args[:utils_proxy]
+			# @r = args[:rails_proxy]
+		# end
 
-			@v = args[:validator] 
-			@ev = args[:env_values] 
-			@g = args[:git_proxy] 
-			@u = args[:utils_proxy]
-			@r = args[:rails_proxy]
-
+		def test_message
+			arg = "/tmp/testapp"
+			rails = r.test_from_runner(arg)
+			utils = u.test_from_runner(arg)
+			gprox = g.test_from_runner(arg)
+			enval = ev.test_from_runner(arg)
+			validator = v.test_from_runner(arg)
+			return {rails: rails, utils: utils, gprox: gprox, enval: enval, validator: validator}
 		end
 
 		def run_move_secret_file(host_path)

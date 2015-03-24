@@ -2,6 +2,10 @@
 module Deploysuite
 	class GitProxy 
 		include CommandlineExecuter
+
+		def test_from_runner(args)
+			args == '/tmp/testapp' ? true : false
+		end
 		
 		def clone_branch(git_branch, repo, host_path)						
 		    cmd = "git clone -b #{git_branch} #{repo} #{host_path}"

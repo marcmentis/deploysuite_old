@@ -2,7 +2,8 @@ module CommonDeployer
 	attr_reader :r
 
 	def initialize
-		@r = Runner.new(rails_proxy: RailsProxy.new, validator: Validator.new, env_values: EnvValues.new, git_proxy: GitProxy.new, utils_proxy: UtilsProxy.new)
+		# @r = Runner.new(rails_proxy: RailsProxy.new, validator: Validator.new, env_values: EnvValues.new, git_proxy: GitProxy.new, utils_proxy: UtilsProxy.new)
+		@r = Runner.new()
 	end
 
 	def clone_new_app1(args={})
@@ -14,6 +15,11 @@ module CommonDeployer
 		r.run_clone_branch(args[:repo], args[:host_path])
 		r.run_move_secret_file(args[:host_path])
 		r.run_set_app_privileges_ownership(args[:host_path])
+	end
+
+	def test_method(args={})
+		args[:host_path] == "/tmp/testapp" ? true : false
+
 	end
 
 	def clone_new_app2(args={})

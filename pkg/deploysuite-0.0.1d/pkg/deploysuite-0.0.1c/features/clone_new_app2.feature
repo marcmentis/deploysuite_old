@@ -22,10 +22,11 @@ Feature: deployer clones new app - part 2
 
 	Scenario: 'clone_new_app2' command functions
 		Given deploysuite started in app root directory
-		Then send message to update gems (bundle)
-		Then send message to precompile assets
-		Then send message to loads db schema
-		Then send message to make first commit
-		Then send message to start application
-		Then send message to run rspec tests
-		Then send message to run cucumber tests
+		Then message successfully sent to deployer
+		#Then send message to update gems (bundle)
+		#Then send message to precompile assets
+		#Then send message to loads db schema
+		#Then send message to make first commit
+		#Then send message to start application
+		#Then send message to run rspec tests
+		#Then send message to run cucumber tests

@@ -5,6 +5,7 @@ When /^I get help for "([^"]*)"$/ do |app_name|
   step %(I run `#{app_name} help`)
 end
 
+
 # Add more step definitions here
 
 Given(/^app \/tmp\/test_app does not exist$/) do
@@ -41,88 +42,103 @@ Given(/^deploysuite started in app root directory$/) do
   #Don't do anything
 end
 
-Then(/^send message to update gems \(bundle\)$/) do
-	r = double()
-	r.stub(:bundle)
 
-	runner = Runner.new(rails_proxy: r)
-	runner.run_bundle()
-end
-
-Then(/^send message to precompile assets$/) do
-	r = double()
-	r.stub(:precompile_assets)
-
-	runner = Runner.new(rails_proxy: r)
-	runner.run_precompile_assets()
-end
-
-Then(/^send message to loads db schema$/) do
-	r = double()
-	r.stub(:load_schema)
-
-	runner = Runner.new(rails_proxy: r)
-	runner.run_load_schema()
+Then(/^message successfully sent to deployer$/) do
+  DevDeployer ||= double()
+  DevDeployer.stub(:precompile_assets)
+#{command: clone_new_app2, args: {host_path: /tmp/testap}}
+  repo_switcher = RepoBranchSwitcher.new
+  host_path = "/tmp/testapp"
+  r = repo_switcher.send({command: "test_method", args: {host_path: host_path} })
+  expect(r).to eq true
 
 end
 
-Then(/^send message to make first commit$/) do
-	g = double()
-	g.stub(:first_commit)
 
-	r = Runner.new(validator: Validator.new, env_values: EnvValues.new, git_proxy: g)
-	r.run_first_commit()
-end
 
-Then(/^send message to start application$/) do
-	u = double()
-	u.stub(:start_application)
+# Then(/^send message to update gems \(bundle\)$/) do
+# 	r = double()
+# 	r.stub(:bundle)
 
-	runner = Runner.new(utils_proxy: u)
-	runner.run_start_application()
-end
+# 	runner = Runner.new()
+# 	runner.run_bundle()
+# end
 
-Then(/^send message to run rspec tests$/) do
-	r = double()
-	r.stub(:rspec_tests)
+#OLD TESTS FOR RUNNER BEFORE REMOVING DEPENDENCY INJECTION
+	# Then(/^send message to precompile assets$/) do
+	# 	r = double()
+	# 	r.stub(:precompile_assets)
 
-	runner = Runner.new(rails_proxy: r)
-	runner.run_rspec_tests
-end
+	# 	runner = Runner.new(rails_proxy: r)
+	# 	runner.precompile_assets()
+	# end
 
-Then(/^send message to run cucumber tests$/) do
-	r = double()
-	r.stub(:cucumber_tests)
+	# Then(/^send message to loads db schema$/) do
+	# 	r = double()
+	# 	r.stub(:load_schema)
 
-	runner = Runner.new(rails_proxy: r)
-	runner.run_cucumber_tests
-end
+	# 	runner = Runner.new(rails_proxy: r)
+	# 	runner.run_load_schema()
 
-Then(/^send message to clobber assets$/) do
-	r = double()
-	r.stub(:clobber_assets)
+	# end
 
-	runner = Runner.new(rails_proxy: r)
-	runner.run_clobber_assets
-end
+	# Then(/^send message to make first commit$/) do
+	# 	g = double()
+	# 	g.stub(:first_commit)
 
-Then(/^send message to stash local changes$/) do
-  g = double()
-  g.stub(:stash_local_changes)
-  runner = Runner.new(git_proxy: g)
-  runner.run_stash_local_changes
-end
+	# 	r = Runner.new(validator: Validator.new, env_values: EnvValues.new, git_proxy: g)
+	# 	r.run_first_commit()
+	# end
 
-Then(/^send message to fetch appropriate branch from origin$/) do
-  g = double()
-  g.stub(:fetch_branch_from_origin)
-  runner = Runner.new(git_proxy: g, env_values: EnvValues.new, validator: Validator.new)
-  runner.run_fetch_branch_from_origin
-end
+	# Then(/^send message to start application$/) do
+	# 	u = double()
+	# 	u.stub(:start_application)
 
-Then(/^send message to merge fetched branch with appropriate local branch$/) do
-  g = double()
-  g.stub(:merge_fetched_branch)
-  runner = Runner.new(git_proxy: g, env_values: EnvValues.new, validator: Validator.new)
-  runner.run_merge_fetched_branch('message')
-end
+	# 	runner = Runner.new(utils_proxy: u)
+	# 	runner.run_start_application()
+	# end
+
+	# Then(/^send message to run rspec tests$/) do
+	# 	r = double()
+	# 	r.stub(:rspec_tests)
+
+	# 	runner = Runner.new(rails_proxy: r)
+	# 	runner.run_rspec_tests
+	# end
+
+	# Then(/^send message to run cucumber tests$/) do
+	# 	r = double()
+	# 	r.stub(:cucumber_tests)
+
+	# 	runner = Runner.new(rails_proxy: r)
+	# 	runner.run_cucumber_tests
+	# end
+
+	# Then(/^send message to clobber assets$/) do
+	# 	r = double()
+	# 	r.stub(:clobber_assets)
+
+	# 	runner = Runner.new(rails_proxy: r)
+	# 	runner.run_clobber_assets
+	# end
+
+	# Then(/^send message to stash local changes$/) do
+	#   g = double()
+	#   g.stub(:stash_local_changes)
+	#   runner = Runner.new(git_proxy: g)
+	#   runner.run_stash_local_changes
+	# end
+
+	# Then(/^send message to fetch appropriate branch from origin$/) do
+	#   g = double()
+	#   g.stub(:fetch_branch_from_origin)
+	#   runner = Runner.new(git_proxy: g, env_values: EnvValues.new, validator: Validator.new)
+	#   runner.run_fetch_branch_from_origin
+	# end
+
+	# Then(/^send message to merge fetched branch with appropriate local branch$/) do
+	#   g = double()
+	#   g.stub(:merge_fetched_branch)
+	#   runner = Runner.new(git_proxy: g, env_values: EnvValues.new, validator: Validator.new)
+	#   runner.run_merge_fetched_branch('message')
+	# end

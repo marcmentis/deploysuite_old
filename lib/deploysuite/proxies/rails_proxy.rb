@@ -2,6 +2,10 @@ module Deploysuite
 	class RailsProxy
 		include CommandlineExecuter
 
+		def test_from_runner(args)
+			args == '/tmp/testapp' ? true : false
+		end
+
 		def bundle
 			cmd = "bundle --without development test"
 			# process_cmd(cmd,'stdout')
