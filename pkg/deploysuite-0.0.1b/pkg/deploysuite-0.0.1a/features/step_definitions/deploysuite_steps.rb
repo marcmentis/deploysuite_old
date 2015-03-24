@@ -44,12 +44,11 @@ end
 
 
 Then(/^message successfully sent to deployer$/) do
-  DevDeployer ||= double()
-  DevDeployer.stub(:precompile_assets)
-#{command: clone_new_app2, args: {host_path: /tmp/testap}}
+  #DevDeployer ||= double()
+  #DevDeployer.stub(:precompile_assets)
   repo_switcher = RepoBranchSwitcher.new
   host_path = "/tmp/testapp"
-  r = repo_switcher.send({command: "test_method", args: {host_path: host_path} })
+  r = repo_switcher.send({command: "test_from_branch_switcher", args: {host_path: host_path} })
   expect(r).to eq true
 
 end

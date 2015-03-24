@@ -17,9 +17,8 @@ module CommonDeployer
 		r.run_set_app_privileges_ownership(args[:host_path])
 	end
 
-	def test_method(args={})
+	def test_from_branch_switcher(args={})
 		args[:host_path] == "/tmp/testapp" ? true : false
-
 	end
 
 	def clone_new_app2(args={})
