@@ -1,6 +1,0 @@
-= deploysuite
-
-Describe your project here
-
-:include:deploysuite.rdoc
-
