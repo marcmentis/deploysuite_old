@@ -1,0 +1,196 @@
+module Deploysuite
+	class Runner
+		attr_reader :v, :ev, :g, :u, :r
+
+		
+		def initialize
+			@v = Validator.new() 
+			@ev = EnvValues.new() 
+			@g = GitProxy.new() 
+			@u = UtilsProxy.new()
+			@r = RailsProxy.new()
+		end
+		# def initialize(args)
+			# @v = args[:validator] 
+			# @ev = args[:env_values] 
+			# @g = args[:git_proxy] 
+			# @u = args[:utils_proxy]
+			# @r = args[:rails_proxy]
+		# end
+
+		def test_message
+			arg = "/tmp/testapp"
+			rails = r.test_from_runner(arg)
+			utils = u.test_from_runner(arg)
+			gprox = g.test_from_runner(arg)
+			enval = ev.test_from_runner(arg)
+			validator = v.test_from_runner(arg)
+			return {rails: rails, utils: utils, gprox: gprox, enval: enval, validator: validator}
+		end
+
+		def run_move_secret_file(host_path)
+			app_name = v.get_app_name(host_path)
+			file = "/rails/#{app_name}_enc_application.yml"
+			final_path = "#{host_path}/config/enc_application.yml"
+			u.move_secret_file(file, host_path)
+
+			$stdout.puts Rainbow("Success: #{file} moved to #{final_path}").green
+		end
+
+		def run_set_app_privileges_ownership(host_path)
+			final_deployer_group = v.get_final_deployer_group(host_path)
+			u.set_app_group_ownership(host_path, final_deployer_group)
+			u.set_app_permissions(host_path)
+			app_name = v.get_app_name(host_path)
+
+			$stdout.puts Rainbow("Success: Group ownership and privileges set for #{app_name}").green
+		end
+
+		# VALIDATIONS
+		# Check that app directory does not exist
+		def run_app_not_exist?(host_path)
+			if v.app_not_exist?(host_path)
+				$stdout.puts Rainbow("Success: No pre-existig app at '#{host_path}'").green
+			else
+				exit 1
+			end
+		end
+
+		# Check that user is member of 'final_deployer_group'
+		def run_in_final_deployer_group?(host_path)
+			path_to_host = v.get_path_to_host(host_path)
+			if v.in_final_deployer_group?(ev.user, ev.user_groups, host_path)
+				$stdout.puts Rainbow("Success: '#{ev.user}' is member of '#{path_to_host}' group").green
+			else
+				
+			end
+		end
+
+		# Check that user is member of 'deployers' group
+		def run_valid_user?
+			if v.valid_user?(ev.user, ev.user_groups, "railsdep")
+				$stdout.puts Rainbow("Success: '#{ev.user}' is member of 'railsdep' group").green
+			else
+				exit 1
+			end
+		end
+
+		# Check that path to app is legal
+		def run_path_to_host_legal?(host_path)
+			if v.path_to_host_legal?(host_path)
+				path_to_host = v.get_path_to_host(host_path)
+				$stdout.puts Rainbow("Success: '#{path_to_host}' is legal path for app").green
+			else
+				exit 1
+			end
+		end
+
+		# Check that Repo exists and user has privileges
+		def run_repo_exists?(repo)
+			if v.repo_exists?(repo)
+				$stdout.puts Rainbow("Success: '#{repo}' exists and '#{ev.user}' has privileges").green
+			else
+				exit 1
+			end
+		end
+
+		# Check that secret_config1 file exists
+		def run_secret_config1?(host_path)
+			if v.secret_config1?(host_path)
+				$stdout.puts Rainbow("Success: secret_config1 exists").green
+			else
+				exit 1
+			end
+		end
+
+		def run_clone_branch(repo, host_path)
+		    git_branch = v.get_git_branch(ev.machine_name)
+		    g.clone_branch(git_branch, repo, host_path)
+		    $stdout.puts Rainbow("Success: '#{repo}' cloned into '#{host_path}'").green
+		end
+
+		def run_check_pwd(host_path)
+			u.check_pwd(host_path)
+			$stdout.puts Rainbow("Success: 'deploysuite' run from root dir of app: '#{host_path}'").green
+		end
+
+		def run_bundle
+			r.bundle
+			$stdout.puts Rainbow("Success: Production env 'bundle' command run for app").green
+		end
+
+		def run_precompile_assets
+			r.precompile_assets
+			$stdout.puts Rainbow("Success: Production env assets precompiled for app").green
+		end
+
+		# def run_prepare_db
+		# 	git_branch = v.get_git_branch(ev.machine_name)
+		# 	if git_branch == 'dev'
+		# 		run_load_schema
+		# 	else
+		# 		run_generate_sql_script
+		# 	end
+		# end
+
+		def run_load_schema
+			r.load_schema
+			$stdout.puts Rainbow("Success: Schema loaded").green
+		end
+
+		def run_generate_sql_script
+			r.generate_sql_script 
+			$stdout.puts Rainbow("Success: SQL script for DB migrations generated").green
+		end
+
+		def run_migrate_db
+			r.migrate_db
+			$stdout.puts Rainbow("Success: Database migrated").green
+		end
+
+		def run_first_commit
+			g.first_commit
+			$stdout.puts Rainbow("Success: First Commit performed for app").green
+		end
+
+		def run_start_application
+			u.start_application
+			$stdout.puts Rainbow("Success: Application restarted").green
+		end
+
+		def run_rspec_tests
+			r.rspec_tests
+			$stdout.puts Rainbow("Success: Rspec tests run").green
+		end
+
+		def run_cucumber_tests
+			r.cucumber_tests
+			$stdout.puts Rainbow("Success: Cucumber tests run").green
+		end
+
+		def run_clobber_assets
+			r.clobber_assets
+			$stdout.puts Rainbow("Success: Assets clobbered").green
+		end
+
+		def run_stash_local_changes
+			g.stash_local_changes
+			$stdout.puts Rainbow("Success: Local changes stashed").green
+		end
+
+		def run_fetch_branch_from_origin
+			git_branch = v.get_git_branch(ev.machine_name)
+			g.fetch_branch_from_origin(git_branch)
+			$stdout.puts Rainbow("Success: fetch branch from origin").green
+		end
+
+		def run_merge_fetched_branch(message)
+			git_branch = v.get_git_branch(ev.machine_name)
+			g.merge_fetched_branch(git_branch, message)
+			$stdout.puts Rainbow("Success: merge fetched branch").green
+		end
+
+		
+			
+	end
+end
