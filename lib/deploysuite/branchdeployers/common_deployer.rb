@@ -21,7 +21,7 @@ module CommonDeployer
 	    r.run_bundle
 	    r.run_precompile_assets
 	    # HOOK for db functions
-	    	clone_app_db_functions()
+	    	clone_app_db_functions(args)
 	    r.run_first_commit
 	    r.run_start_application
 	    r.run_set_app_privileges_ownership(args[:host_path])
@@ -40,7 +40,7 @@ module CommonDeployer
 	    r.run_bundle
 	    r.run_precompile_assets
 	    # # DB HOOK
-	    	update_app_db_functions()	
+	    	update_app_db_functions(args)	
 	    r.run_start_application
 	    # *** put privilege change here
 	    r.run_rspec_tests if args[:rspec]
@@ -71,10 +71,10 @@ module CommonDeployer
 		r.run_db_structure_dump
 	end
 
-	def update_app_db_functions
+	def update_app_db_functions(args)
 		# HOOK doesn't do anything from common_deployer
 	end
-	def clone_app_db_functions
+	def clone_app_db_functions(args)
 		# HOOK doesn't do anything from common_deployer
 	end
 end
