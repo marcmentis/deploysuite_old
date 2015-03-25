@@ -23,7 +23,7 @@ module Deploysuite
 		end
 
 		def generate_sql_script
-			cmd = "bundle exec rake db:schema:to_sql RAILS_ENV=production"
+			cmd = "bundle exec rake db:migrate:to_sql RAILS_ENV=production"
 			open3method(cmd, 'out')
 		end
 
