@@ -163,8 +163,15 @@ module Deploysuite
 
 		def run_fetch_branch_from_origin
 			git_branch = v.get_git_branch(ev.machine_name)
-			g.fetch_branch_from_origin(git_branch)
-			$stdout.puts Rainbow("Success: fetch branch from origin").green
+			out = g.fetch_branch_from_origin(git_branch)
+			if out[:stderr].include? "up to date"
+				DeployLog.stderr_log.fatal {"Exit Update: This branch already up-to-date"}
+				$stdout.puts Rainbow("Exit: This branch already up-to-date").green
+				exit 1
+			else
+				$stdout.puts Rainbow("Success: fetch branch from origin").green
+			end
+			
 		end
 
 		def run_merge_fetched_branch(message)

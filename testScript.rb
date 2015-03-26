@@ -162,6 +162,30 @@ require 'rainbow'
 			end
 		end
 
+		def fetch_branch_from_origin(git_branch)
+			cmd = "git fetch -v origin #{git_branch}:refs/remotes/origin/#{git_branch}"
+			open3method(cmd, 'out')		
+		end
+
+		def run_fetch_branch_from_origin
+			# git_branch = v.get_git_branch(ev.machine_name)
+			# out = g.fetch_branch_from_origin(git_branch)
+
+			git_branch = 'dev'
+			out = fetch_branch_from_origin(git_branch)
+		
+			puts "stdout: #{out[:stdout]}"
+			puts "stderr: #{out[:stderr]}"
+			puts "status: #{out[:status]}"
+			puts "exit: #{out[:exit]}"
+			if out[:stderr].include? "up to date"
+				exit 1
+			else
+				$stdout.puts Rainbow("Success: fetch branch from origin").green
+			end
+			
+		end
+
 #rspec_tests
 # fail_with_invalid_command
 # clobber_assets
@@ -170,7 +194,7 @@ require 'rainbow'
 # merge_fetched_branch('dev', 'message from test')
 # migrate_db
 # generate_sql_script
-
-set_owned_file_privileges('railsdep')
+# set_owned_file_privileges('railsdep')
+run_fetch_branch_from_origin
 
 
