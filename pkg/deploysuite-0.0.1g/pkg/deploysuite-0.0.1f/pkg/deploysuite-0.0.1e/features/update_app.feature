@@ -1,10 +1,10 @@
 Feature: deployer updates existing app
 
-	To automate updating an existing application, a deployer will 'CD' INTO THE ROOT DIRECTORY of the newly cloned branch and run deploysuites' 'update_app' command. The deployer must belong to the 'final_deploy_group' on the server. Appropriate 'bundler', 'rails', 'rake', 'git', and 'bash' commands will be used to perform all steps necessary for updating the app, changing db tables/ creating SQL script [optional] and running tests [optional]
+	To automate updating an existing application, a deployer will 'cd' INTO THE ROOT DIRECTORY of the app and run deploysuites' 'update_app' command with an appropriate message (-m flag). The deployer must belong to the 'final_deploy_group' on the server. Appropriate 'bundler', 'rails', 'rake', 'git', and 'bash' commands will be used to, perform all steps necessary for updating the app, add new encrypted db file (if new schema added), [optional], change any db tables/ creating SQL script [optional] and running tests [optional]
 
-	The 'update_app' command has one required global flag [--host_path], one required flag [-m], and three optional local switches [--db], [--rspec], [--cucumber]
+	The 'update_app' command has one required global flag [--host_path], one required flag [-m] (update message), and three optional local switches [--db] (change db), [--rspec] (run rspec tests), [--cucumber] (run cucumber tests)
 
-	Usage example: $ deploysuite --host_path=/path/to/host update_app -m "Add function" [--db] [--rspec] [--cucumber]
+	Usage example: $ deploysuite --host_path=/path/to/host update_app -m "Add function" [--encrypted_file] [--db] [--rspec] [--cucumber]
 
 	The 'update_app' command will perform the following functions:
 		1. Remove (clobber) existing precompiled assets
@@ -13,11 +13,12 @@ Feature: deployer updates existing app
 		4. Merge the fetched branch with the appropriate local branch
 		5. Update gems with 'bundle' command 
 		6. Precompile assets 
-		7. Make changes to db tables (DEV server)/ Create SQL script of changes (QA, PROD servers) [optional]
-		8. Restart app
-		9. Set group privileges
-		10. Run RSpec unit tests [optional]
-		11. Run Cucumber behavioral tests [optional]
+		7. Move encrypted db file (from /rails/<encrypted_file>) into app [optional]
+		8. Make changes to db tables (DEV server)/ Create SQL script of changes (QA, PROD servers) [optional]
+		9. Restart app
+		10. Set group privileges
+		11. Run RSpec unit tests [optional]
+		12. Run Cucumber behavioral tests [optional]
 	
 	Scenario: 'update_app' command functions
 		Given deploysuite started in app root directory
@@ -27,6 +28,11 @@ Feature: deployer updates existing app
 		Then send message to merge fetched branch with appropriate local branch
 		Then send message to update gems (bundle)
 		Then send message to precompile assets
+
+		Then send message to check if new encrypted file exists
+		Then send message to move new encrypted db file into app
+		Then send message to make changes to db tables (DEV server)
+		Then send message to create SQL script of table changes (QA, PROD)
 
 		Then send message to start application
 		

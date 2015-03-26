@@ -139,3 +139,17 @@ Then(/^send message to merge fetched branch with appropriate local branch$/) do
   runner = Runner.new(git_proxy: g, env_values: EnvValues.new, validator: Validator.new)
   runner.run_merge_fetched_branch('message')
 end
+
+Then(/^send message to check if new encrypted file exists$/) do
+  v = double()
+  v.stub(:run_secret_config1?)
+  runner = Runner.new(validator: v)
+  runner.run_secret_config1?
+end
+
+Then(/^send message to move new encrypted db file into app$/) do
+  u = double()
+  u.stub(:move_secret_file)
+  runner = Runner.new(utils_proxy: u, validator: Validator.new)
+  runner.run_move_secret_file('host_path')
+end
