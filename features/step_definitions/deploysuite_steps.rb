@@ -142,9 +142,9 @@ end
 
 Then(/^send message to check if new encrypted file exists$/) do
   v = double()
-  v.stub(:run_secret_config1?)
+  v.stub(:secret_config1?) {true}  # Make this message return true
   runner = Runner.new(validator: v)
-  runner.run_secret_config1?
+  runner.run_secret_config1?('host_path')
 end
 
 Then(/^send message to move new encrypted db file into app$/) do
@@ -153,3 +153,26 @@ Then(/^send message to move new encrypted db file into app$/) do
   runner = Runner.new(utils_proxy: u, validator: Validator.new)
   runner.run_move_secret_file('host_path')
 end
+
+Then(/^send message to make changes to DEV db tables$/) do
+  r = double()
+  r.stub(:migrate_db)
+  runner =Runner.new(rails_proxy: r)
+  runner.run_migrate_db
+end
+
+Then(/^send messsage to make changes to QA\/PROD db tables$/) do
+  r = double()
+  r.stub(:generate_sql_script)
+  runner = Runner.new(rails_proxy: r)
+  runner.run_generate_sql_script
+end
+
+Then(/^send message to set group ownership and privileges for owned files$/) do
+	u = double()
+	u.stub(:set_owned_file_privileges)
+	runner = Runner.new(utils_proxy: u, validator: Validator.new)
+	runner.run_set_owned_file_privileges('/tmp/testapp')
+end
+
+

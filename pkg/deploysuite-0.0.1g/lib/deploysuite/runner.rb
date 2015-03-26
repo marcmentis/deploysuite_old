@@ -2,7 +2,7 @@ module Deploysuite
 	class Runner
 		attr_reader :v, :ev, :g, :u, :r
 
-		def initialize(args)
+		def initialize(args={})
 			@v = args[:validator] 
 			@ev = args[:env_values] 
 			@g = args[:git_proxy] 
@@ -171,6 +171,12 @@ module Deploysuite
 			git_branch = v.get_git_branch(ev.machine_name)
 			g.merge_fetched_branch(git_branch, message)
 			$stdout.puts Rainbow("Success: merge fetched branch").green
+		end
+
+		def run_set_owned_file_privileges(host_path)
+			final_deployer_group = v.get_final_deployer_group(host_path)
+			u.set_owned_file_privileges(final_deployer_group)
+			$stdout.puts Rainbow("Success: privileges and grp ownership set for owned files").green
 		end
 
 		

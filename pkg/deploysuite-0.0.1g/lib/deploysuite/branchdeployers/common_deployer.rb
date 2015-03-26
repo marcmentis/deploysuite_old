@@ -33,19 +33,19 @@ module CommonDeployer
 	def update_app(args={})	
 		r.run_secret_config1?(args[:host_path]) if args[:encrypted_file]
 		r.run_move_secret_file(args[:host_path]) if args[:encrypted_file]
-	    # r.run_check_pwd(args[:host_path])
-	    # r.run_clobber_assets
-	    # r.run_stash_local_changes
-	    # r.run_fetch_branch_from_origin
-	    # r.run_merge_fetched_branch(args[:message])
-	    # r.run_bundle
-	    # r.run_precompile_assets
-	    # # # DB HOOK
-	    # 	update_app_db_functions(args)	
-	    # r.run_start_application
-	    # # *** put privilege change here
-	    # r.run_rspec_tests if args[:rspec]
-	    # r.run_cucumber_tests if args[:cucumber]	
+	    r.run_check_pwd(args[:host_path])
+	    r.run_clobber_assets
+	    r.run_stash_local_changes
+	    r.run_fetch_branch_from_origin
+	    r.run_merge_fetched_branch(args[:message])
+	    r.run_bundle
+	    r.run_precompile_assets
+	    # # DB HOOK
+	    	update_app_db_functions(args)	
+	    r.run_start_application
+	    r.run_set_owned_file_privileges(args[:host_path])
+	    r.run_rspec_tests if args[:rspec]
+	    r.run_cucumber_tests if args[:cucumber]	
 	end
 
 	def rspec(args={})
